@@ -1,3 +1,2 @@
-# Pocket AI (subject to change)
-
-WIP
+# Pocket AI
+(Description WIP)
