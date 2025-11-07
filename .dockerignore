@@ -1,0 +1,14 @@
+node_modules
+npm-debug.log
+.expo
+.expo-shared
+dist
+.git
+.github
+.vscode
+*.md
+.DS_Store
+*.log
+coverage
+.env.local
+.env.*.local

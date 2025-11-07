@@ -4,6 +4,41 @@
 
 ## Start Your Local UI Development Environment
 
+### Option 1: Using Docker (Recommended for Team Consistency)
+
+Docker provides a consistent development environment across all team members, regardless of their operating system.
+
+**Prerequisites:**
+- Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+
+**Steps:**
+
+1. Build and start the Docker container:
+```bash
+docker-compose up --build
+```
+
+2. Access the Expo development server at http://localhost:19000
+
+3. To run in the background:
+```bash
+docker-compose up -d
+```
+
+4. To stop the container:
+```bash
+docker-compose down
+```
+
+5. To view logs:
+```bash
+docker-compose logs -f ui
+```
+
+**Note:** All source code changes are automatically synced to the container, so you can edit files on your local machine and see changes reflected immediately.
+
+### Option 2: Local Setup (Without Docker)
+
 This project uses React Native for the front end. 
 To run your project, navigate to the directory:
 
