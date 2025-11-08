@@ -37,6 +37,15 @@ docker-compose up --build
 
 2. Access the Expo development server at http://localhost:19000
 
+**Interactive Commands:**
+
+To use keyboard shortcuts (press `a` for Android, `w` for web, etc.), open a new terminal and run:
+```bash
+docker exec -it pocket-ai-ui npx expo start
+```
+
+This allows you to interact with the Expo CLI directly.
+
 3. To run in the background:
 ```bash
 docker-compose up -d
