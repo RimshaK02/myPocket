@@ -1,0 +1,36 @@
+name: Notify team when PR is ready
+
+on:
+  pull_request:
+    types: [ready_for_review]
+
+permissions:
+  pull-requests: write
+  issues: write
+  
+jobs:
+  notify_team:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment and tag team
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            const message = `
+            :tada: Thank you for your contribution! This pull request is now **ready for review**.
+
+            @Capstone-PocketAI/cowversationers — please take a look! :blush:
+            `;
+
+            await github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number: pr.number,
+              body: message
+            });
+
+            console.log("Notification comment posted successfully.");
