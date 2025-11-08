@@ -11,6 +11,23 @@ Docker provides a consistent development environment across all team members, re
 **Prerequisites:**
 - Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
+**Initial Setup:**
+
+1. Copy the environment file and configure your local IP:
+```bash
+cp .env.example .env
+```
+
+2. Find your local IP address:
+   - **Windows**: Run `ipconfig` and look for "IPv4 Address" under your Wi-Fi adapter
+   - **Mac**: Run `ifconfig | grep "inet " | grep -v 127.0.0.1`
+   - **Linux**: Run `hostname -I | awk '{print $1}'`
+
+3. Edit `.env` file and update `EXPO_HOST` with your IP address:
+```
+EXPO_HOST=192.168.1.xxx
+```
+
 **Steps:**
 
 1. Build and start the Docker container:
