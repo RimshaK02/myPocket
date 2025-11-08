@@ -25,7 +25,7 @@ cp .env.example .env
 
 3. Edit `.env` file and update `EXPO_HOST` with your IP address:
 ```
-EXPO_HOST=192.168.1.xxx
+EXPO_HOST=xxx.xxx.xxx.xxx
 ```
 
 **Steps:**
