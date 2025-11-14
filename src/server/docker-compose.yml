@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: pocket-ai-server
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+    env_file:
+      - .env
+    volumes:
+      # 소스 코드 실시간 동기화 (개발 모드)
+      - ./src:/app/src
+      - ./package.json:/app/package.json
+      # node_modules는 컨테이너 것을 사용
+      - /app/node_modules
+    restart: unless-stopped
+    networks:
+      - pocket-ai-network
+
+networks:
+  pocket-ai-network:
+    driver: bridge
