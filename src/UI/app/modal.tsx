@@ -68,7 +68,7 @@ export default function ModalScreen() {
           color={colors.secondaryButton}
           title="Lock Screen"
           size={50}
-          iconName={'square-rounded-outline'}
+          iconName={'cellphone-lock'}
         />
         <ModalButton
           onPress={() => {
@@ -78,7 +78,7 @@ export default function ModalScreen() {
           color={colors.primaryButton}
           title="Stop Listening"
           size={70}
-          iconName={'ear-hearing'}
+          iconName={'square-rounded-outline'}
         />
         <ModalButton
           onPress={() => {
@@ -87,7 +87,7 @@ export default function ModalScreen() {
           color={colors.secondaryButton}
           title="Manual Trigger"
           size={50}
-          iconName={'cellphone-lock'}
+          iconName={'ear-hearing'}
         />
       </View>
     </>
