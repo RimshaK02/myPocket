@@ -1,7 +1,5 @@
-version: '3.8'
-
 services:
-  # 백엔드 서버
+  # Backend server
   server:
     build:
       context: ./src/server
@@ -27,21 +25,20 @@ services:
       timeout: 10s
       retries: 3
 
-  # 프론트엔드 UI
+  # Frontend UI
   ui:
     build:
-      context: .
+      context: ./src/UI
       dockerfile: Dockerfile
     container_name: pocket-ai-ui
     ports:
       - "${EXPO_PORT:-19000}:19000"  # Expo dev server
       - "19001:19001"                 # Expo dev tools
       - "19002:19002"                 # Metro bundler
+      - "8081:8081"                   # Metro bundler (web)
     environment:
       - EXPO_DEVTOOLS_LISTEN_ADDRESS=0.0.0.0
-      - EXPO_HOST=${EXPO_HOST:-0.0.0.0}
-      - REACT_NATIVE_PACKAGER_HOSTNAME=${EXPO_HOST:-0.0.0.0}
-      - API_URL=http://server:3000/api  # 서버 컨테이너 이름으로 연결
+      - REACT_NATIVE_PACKAGER_HOSTNAME=${EXPO_HOST:-192.168.40.19}
     volumes:
       - ./src/UI:/app
       - /app/node_modules
