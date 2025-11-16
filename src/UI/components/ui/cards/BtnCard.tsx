@@ -16,7 +16,7 @@ interface BtnCardProps {
     title: string,                 // Title text in panel
     subTitle?: string,             // Optional subtitle text in panel
     icon?: ReactNode,              // SVG or PNG image, pass as React component in tags
-    pos: string,                   // top, middle, bottom, single; influences corner radius
+    pos?: string,                   // top, middle, bottom, single; influences corner radius
     onPress: () => any             // Function called when button is pressed
 };
 
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
 });
 
 // Required to nest NestedNavBtn inside a Stack.Navigator tag somewhere
-const BtnCard = ({style, title, subTitle, icon, pos, onPress}: BtnCardProps) => {
+const BtnCard = ({style, title, subTitle, icon, pos="single", onPress}: BtnCardProps) => {
     const nav = useNavigation();
 
     const posMapping: IPosMapping = {

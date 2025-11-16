@@ -17,7 +17,7 @@ interface NestedNavCardProps {
     title: string,                 // Title text in panel
     subTitle?: string,             // Optional subtitle text in panel
     icon?: ReactNode,              // SVG or PNG image, pass as React component in tags
-    pos: string                    // top, middle, bottom, single; influences corner radius
+    pos?: string                    // top, middle, bottom, single; influences corner radius
 };
 
 interface IPosMapping {
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
 });
 
 // Required to nest NestedNavBtn inside a Stack.Navigator tag somewhere
-const NestedNavCard = ({style, submenuRef, title, subTitle, icon, pos}: NestedNavCardProps) => {
+const NestedNavCard = ({style, submenuRef, title, subTitle, icon, pos="single"}: NestedNavCardProps) => {
     const nav = useNavigation();
 
     const posMapping: IPosMapping = {

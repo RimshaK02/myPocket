@@ -2,7 +2,7 @@
 
 // React/React Native imports
 import { Text, View, StyleProp, ViewStyle,  Pressable, StyleSheet } from 'react-native';
-import React, { ReactNode, useRef } from 'react';
+import React, { ReactNode, ReactElement, useRef } from 'react';
 import { SvgProps } from "react-native-svg";
 
 // React navigation/expo router stuff
@@ -18,6 +18,60 @@ interface CardWrapperProps {
     header?: string
 };
 
+// Required to nest NestedNavBtn inside a Stack.Navigator tag somewhere
+const CardWrapper = ({children, style, header}: React.PropsWithChildren<CardWrapperProps>) => {
+
+    const contentList: Array<React.ReactNode> = [];
+    const listLen: number = React.Children.count(children);
+
+    // Iterate through each panel/child and: 
+    //   - Add separator between each panel, if more than one
+    //   - Customize border radius styling based on child position/index, using childPos
+    React.Children.forEach(children, (child, index) => {
+        // Mainly type checking stuff (...ironically raising type-checking errors);
+        // if 
+        if (React.isValidElement(child)) {
+            const childPos = (listLen - 1 === 0) ? "single" : (
+                (index === 0) ? "top" : (
+                    (index === listLen - 1) ? "bottom" : "middle"
+                ) 
+            );
+
+            contentList.push(
+                React.cloneElement(child, {
+                    pos: childPos,                    
+                    key: `child-${index}`
+                })
+            );
+        } else {
+            contentList.push(child)
+        }
+
+        if (index < listLen - 1) {
+            contentList.push(
+                <View
+                    key={`divider-${index}`}
+                    style={styles.divider}
+                />
+            ) 
+        }
+    });
+
+    return(
+        <View style={styles.container}>
+            {(typeof header !== 'undefined') &&
+                <View style={styles.headerWrapper}>
+                    <Text style={[GlobalStyles.txt, styles.header]}>   
+                        {header}
+                    </Text>
+                </View>
+            }
+            <View style={styles.contentWrapper}>
+                {contentList}
+            </View>
+        </View>
+    )
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -54,41 +108,5 @@ const styles = StyleSheet.create({
         marginRight: 10
     }
 });
-
-// Required to nest NestedNavBtn inside a Stack.Navigator tag somewhere
-const CardWrapper = ({children, style, header}: React.PropsWithChildren<CardWrapperProps>) => {
-
-    const contentList: Array<React.ReactNode> = [];
-    const listLen: number = React.Children.count(children);
-    
-    // Iterate through each panel/child and add separator between each panel, if more than one
-    React.Children.forEach(children, (child, index) => {
-        contentList.push(child);
-        
-        if (index < listLen - 1) {
-            contentList.push(
-                <View
-                    key={`divider-${index}`}
-                    style={styles.divider}
-                />
-            ) 
-        }
-    });
-
-    return(
-        <View style={styles.container}>
-            {(typeof header !== 'undefined') &&
-                <View style={styles.headerWrapper}>
-                    <Text style={[GlobalStyles.txt, styles.header]}>   
-                        {header}
-                    </Text>
-                </View>
-            }
-            <View style={styles.contentWrapper}>
-                {contentList}
-            </View>
-        </View>
-    )
-}
 
 export default CardWrapper; 

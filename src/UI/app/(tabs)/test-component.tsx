@@ -58,20 +58,17 @@ const TestMain = () => {
                     icon={<EditSpeechIcon />}                                   // Vector/PNG icon to display, pass as component
                     title='Edit Transcription'                                  // Title in card
                     subTitle='Correct any errors made during transcription'     // Subtitle in card
-                    pos='top'                                                   // Position relative to other elements in wrapper (temp, will remove later)
                 />
                 <NestedNavCard
                     submenuRef='Sub2'
                     icon={<EditDetailsIcon />}
                     title='Edit Task Details'
                     subTitle='Manually edit attributes unique to command type'
-                    pos='middle'
                 />
                 <SwitchCard 
                     icon={<AudioIcon />}
                     title='Store Audio Recordings'
                     subTitle='For your own reviewing later. Details in Privacy Policy'
-                    pos='middle'
                     onFunc={() => alert("On")}
                     offFunc={() => alert("Off")}
                 />
@@ -79,7 +76,6 @@ const TestMain = () => {
                     icon={<SwitchIcon />}
                     title='Change Log Type'
                     subTitle='Logged entry current identified as "Task"'
-                    pos='bottom'
                     onPress={() => alert("Button pressed!")}
                 />
             </CardWrapper>

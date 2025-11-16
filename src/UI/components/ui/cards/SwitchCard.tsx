@@ -14,7 +14,7 @@ interface SwitchCardProps {
     title: string,                 // Title text in panel
     subTitle?: string,             // Optional subtitle text in panel
     icon?: ReactNode,              // SVG or PNG image, pass as React component in tags
-    pos: string,                   // top, middle, bottom, single; influences corner radius
+    pos?: string,                   // top, middle, bottom, single; influences corner radius
     onFunc: () => any,             // Function called when switch is toggled on
     offFunc: () => any             // Function called when switch is toggled off
 };
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
 });
 
 // Required to nest NestedNavBtn inside a Stack.Navigator tag somewhere
-const SwitchCard = ({style, title, subTitle, icon, pos, onFunc, offFunc}: SwitchCardProps) => {
+const SwitchCard = ({style, title, subTitle, icon, pos="single", onFunc, offFunc}: SwitchCardProps) => {
     // Switch constants
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => {
