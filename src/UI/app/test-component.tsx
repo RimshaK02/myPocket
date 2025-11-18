@@ -41,6 +41,12 @@ const TestMain = () => {
             paddingVertical: 60,
             paddingHorizontal: 25
         }}>
+            <BackNavBtn 
+                style={{
+                    marginBottom: 17
+                }}
+                isDark={false}
+            />
             <Text
                 style={[GlobalStyles.txt, GlobalStyles.txtHeaderPage, {
                     marginBottom: 30

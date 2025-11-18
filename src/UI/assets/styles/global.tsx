@@ -13,9 +13,12 @@ const CLR_TERTIARY = "#465262";
 export default StyleSheet.create({
     pageBG: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
         backgroundColor: CLR_BG,
+        width: "100%", 
+        height: "100%",
+        alignContent: "center",
+        paddingVertical: 60,
+        paddingHorizontal: 25
     },
     txt: {
         fontFamily: "Poppins-Regular",

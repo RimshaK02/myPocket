@@ -58,7 +58,7 @@ const CardWrapper = ({children, style, header}: React.PropsWithChildren<CardWrap
     });
 
     return(
-        <View style={styles.container}>
+        <View style={[styles.container, style]}>
             {(typeof header !== 'undefined') &&
                 <View style={styles.headerWrapper}>
                     <Text style={[GlobalStyles.txt, styles.header]}>   
