@@ -7,6 +7,10 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Link } from 'expo-router';
 
+// SVG image import test, remove this later
+import TestSVG from "@/assets/images/delete.svg";
+
+
 export default function HomeScreen() {
   return (
     <ParallaxScrollView
@@ -77,6 +81,7 @@ export default function HomeScreen() {
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 4: Go Jays Go🎃</ThemedText>
       </ThemedView>
+      <TestSVG color="#CF2E2E" width={100} height={100} />
     </ParallaxScrollView>
   );
 }
