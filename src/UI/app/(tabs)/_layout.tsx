@@ -1,11 +1,11 @@
 import { Tabs, router } from 'expo-router';
-import { Pressable, StyleSheet, Text } from 'react-native';
+import { Image, Pressable, StyleSheet, Text } from 'react-native';
 import React from 'react';
 
 import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import MicIcon from '@/assets/images/mic.svg';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -25,7 +25,9 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Logs',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="text.document" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <Image source={require('@/assets/images/logs.png')} style={{ tintColor: color }} />
+          ),
         }}
       />
       <Tabs.Screen
@@ -35,7 +37,7 @@ export default function TabLayout() {
           tabBarButton: () => (
             <Pressable style={styles.fabContainer} onPress={() => router.push('/modal')}>
               <Pressable style={styles.fab} onPress={() => router.push('/modal')}>
-                <IconSymbol name="mic" color="#fff" size={32} />
+                <MicIcon width={32} height={32} color={'#fff'} />
               </Pressable>
               <Text style={styles.fabLabel}>Start Listening</Text>
             </Pressable>
@@ -49,7 +51,9 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="person" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <Image source={require('@/assets/images/profile.png')} style={{ tintColor: color }} />
+          ),
         }}
       />
     </Tabs>
