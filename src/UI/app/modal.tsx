@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useState } from 'react';
 import Entypo from '@expo/vector-icons/Entypo';
 import ModalButton from '@/components/ModalButton';
@@ -33,23 +33,17 @@ export default function ModalScreen() {
         {triggered ? (
           <>
             <ThemedText type="subtitle">Trigger word detected, recording...</ThemedText>
-            <ThemedText
-              type="default"
-              style={{ fontStyle: 'italic', textAlign: 'center', marginTop: 20, color: '#44869F' }}
-            >
+            <Text style={[styles.secondaryText, { color: '#44869F' }]}>
               ... Pocket AI, cow 420 seems to have a limp, assign Jason to take a look at it late in
               the
-            </ThemedText>
+            </Text>
           </>
         ) : (
           <>
             <ThemedText type="subtitle">Listening for the trigger word...</ThemedText>
-            <ThemedText
-              type="default"
-              style={{ fontStyle: 'italic', textAlign: 'center', marginTop: 20 }}
-            >
+            <Text style={styles.secondaryText}>
               Say "Hey Pocket", followed by a phrase or command
-            </ThemedText>
+            </Text>
           </>
         )}
       </ThemedView>
@@ -120,5 +114,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#DFDFDF',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  secondaryText: {
+    fontStyle: 'italic',
+    textAlign: 'center',
+    marginTop: 20,
   },
 });
