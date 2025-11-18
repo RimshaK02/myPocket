@@ -62,6 +62,8 @@ export default function TabLayout() {
 
 const styles = StyleSheet.create({
   fab: {
+    borderColor: '#fff',
+    borderWidth: 2,
     position: 'absolute',
     bottom: 16,
     alignSelf: 'center',
