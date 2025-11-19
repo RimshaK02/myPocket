@@ -1,7 +1,7 @@
 // BtnCard.tsx: Component for cards to open submenus
 
 // React/React Native imports
-import { Text, View, StyleProp, ViewStyle,  Pressable, StyleSheet } from 'react-native';
+import { Text, View, StyleProp, TextStyle, ViewStyle,  Pressable, StyleSheet } from 'react-native';
 import { ReactNode } from 'react';
 
 // React navigation/expo router stuff
@@ -12,9 +12,11 @@ import GlobalStyles, { CLR_DARK } from "@/assets/styles/global";
 import NavArrow from "@/assets/images/nav-arrow.svg";
 
 interface BtnCardProps {
-    style?: StyleProp<ViewStyle>,  // Optional extra styling components, if necessary
+    cardStyle?: StyleProp<ViewStyle>,  // Optional extra styling components, if necessary
+    titleStyle?: StyleProp<TextStyle>,  // Optional extra styling components, if necessary
+    subtitleStyle?: StyleProp<TextStyle>,  // Optional extra styling components, if necessary
     title: string,                 // Title text in card
-    subTitle?: string,             // Optional subtitle text in card
+    subtitle?: string,             // Optional subtitle text in card
     icon?: ReactNode,              // SVG or PNG image, pass as React component in tags
     pos?: string,                   // top, middle, bottom, single; influences corner radius
     onPress: () => any             // Function called when button is pressed
@@ -35,7 +37,8 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         justifyContent: "center",
         alignContent: "center",
-        gap: 3
+        gap: 3,
+        width: "90%"
     },
     arrowWrapper: {
         width: "auto",
@@ -61,7 +64,7 @@ const styles = StyleSheet.create({
 });
 
 // Required to nest NestedNavBtn inside a Stack.Navigator tag somewhere
-const BtnCard = ({style, title, subTitle, icon, pos="single", onPress}: BtnCardProps) => {
+const BtnCard = ({cardStyle, titleStyle, subtitleStyle, title, subtitle, icon, pos="single", onPress}: BtnCardProps) => {
     const nav = useNavigation();
 
     const posMapping: IPosMapping = {
@@ -77,7 +80,7 @@ const BtnCard = ({style, title, subTitle, icon, pos="single", onPress}: BtnCardP
                 GlobalStyles.card,
                 styles.card,
                 posMapping[pos],
-                style,
+                cardStyle,
             ]}
             onPress={onPress}
         >   
@@ -91,13 +94,13 @@ const BtnCard = ({style, title, subTitle, icon, pos="single", onPress}: BtnCardP
 
                 {/* Text wrapper */}
                 <View style={styles.textWrapper}>
-                    <Text style={GlobalStyles.txtPnlTitle}>
+                    <Text style={[GlobalStyles.txtPnlTitle, titleStyle]}>
                         {title}
                     </Text>
                     {/* Optional subtitle, if it is passed through props */}
-                    {(typeof subTitle !== 'undefined') &&
-                        <Text style={GlobalStyles.txtPnlSubtitle}>
-                            {subTitle}
+                    {(typeof subtitle !== 'undefined') &&
+                        <Text style={[GlobalStyles.txtPnlSubtitle, subtitleStyle]}>
+                            {subtitle}
                         </Text>
                     }
                 </View>

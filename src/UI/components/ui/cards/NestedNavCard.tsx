@@ -1,7 +1,7 @@
 // NestedNavCard.tsx: Component for cards to open submenus
 
 // React/React Native imports
-import { Text, View, StyleProp, ViewStyle,  Pressable, StyleSheet } from 'react-native';
+import { Text, View, StyleProp, ViewStyle, TextStyle, Pressable, StyleSheet } from 'react-native';
 import { ReactNode } from 'react';
 
 // React navigation/expo router stuff
@@ -12,10 +12,12 @@ import GlobalStyles, { CLR_DARK } from "@/assets/styles/global";
 import NavArrow from "@/assets/images/nav-arrow.svg";
 
 interface NestedNavCardProps {
-    style?: StyleProp<ViewStyle>,  // Optional extra styling components, if necessary
+    cardStyle?: StyleProp<ViewStyle>,  // Optional extra styling components, if necessary
+    titleStyle?: StyleProp<TextStyle>,  // Optional extra styling components, if necessary
+    subtitleStyle?: StyleProp<TextStyle>,  // Optional extra styling components, if necessary
     submenuRef: string,            // String referencing name field of stack to direct to
     title: string,                 // Title text in card
-    subTitle?: string,             // Optional subtitle text in card
+    subtitle?: string,             // Optional subtitle text in card
     icon?: ReactNode,              // SVG or PNG image, pass as React component in tags
     pos?: string                    // top, middle, bottom, single; influences corner radius
 };
@@ -35,13 +37,19 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         justifyContent: "center",
         alignContent: "center",
-        gap: 3
+        gap: 3,
+        width: "80%"
     },
     arrowWrapper: {
+        position: "absolute",
+        right: "5%",
+        marginTop: "auto",
+        marginBottom: "auto",
         width: "auto",
         height: "auto",
         justifyContent: "center",
         alignContent: "center",
+        alignSelf: "center"
     },
     img: {
         justifyContent: "center",
@@ -61,7 +69,7 @@ const styles = StyleSheet.create({
 });
 
 // Required to nest NestedNavBtn inside a Stack.Navigator tag somewhere
-const NestedNavCard = ({style, submenuRef, title, subTitle, icon, pos="single"}: NestedNavCardProps) => {
+const NestedNavCard = ({cardStyle, titleStyle, subtitleStyle, submenuRef, title, subtitle, icon, pos="single"}: NestedNavCardProps) => {
     const nav = useNavigation();
 
     const posMapping: IPosMapping = {
@@ -80,7 +88,7 @@ const NestedNavCard = ({style, submenuRef, title, subTitle, icon, pos="single"}:
                 GlobalStyles.card,
                 styles.card,
                 posMapping[pos],
-                style,
+                cardStyle,
             ]}
         >   
             <View style={styles.contentWrapper}>
@@ -93,13 +101,13 @@ const NestedNavCard = ({style, submenuRef, title, subTitle, icon, pos="single"}:
 
                 {/* Text wrapper */}
                 <View style={styles.textWrapper}>
-                    <Text style={GlobalStyles.txtPnlTitle}>
+                    <Text style={[GlobalStyles.txtPnlTitle, titleStyle]}>
                         {title}
                     </Text>
                     {/* Optional subtitle, if it is passed through props */}
-                    {(typeof subTitle !== 'undefined') &&
-                        <Text style={GlobalStyles.txtPnlSubtitle}>
-                            {subTitle}
+                    {(typeof subtitle !== 'undefined') &&
+                        <Text style={[GlobalStyles.txtPnlSubtitle, subtitleStyle]}>
+                            {subtitle}
                         </Text>
                     }
                 </View>

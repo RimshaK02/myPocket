@@ -63,25 +63,25 @@ const TestMain = () => {
                     submenuRef='Sub1'                                           // Name of page to link to
                     icon={<EditSpeechIcon />}                                   // Vector/PNG icon to display, pass as component
                     title='Edit Transcription'                                  // Title in card
-                    subTitle='Correct any errors made during transcription'     // Subtitle in card
+                    subtitle='Correct any errors made during transcription'     // Subtitle in card
                 />
                 <NestedNavCard
                     submenuRef='Sub2'
                     icon={<EditDetailsIcon />}
                     title='Edit Task Details'
-                    subTitle='Manually edit attributes unique to command type'
+                    subtitle='Manually edit attributes unique to command type'
                 />
                 <SwitchCard 
                     icon={<AudioIcon />}
                     title='Store Audio Recordings'
-                    subTitle='For your own reviewing later. Details in Privacy Policy'
+                    subtitle='For your own reviewing later. More details in Privacy Policy'
                     onFunc={() => alert("On")}
                     offFunc={() => alert("Off")}
                 />
                 <BtnCard
                     icon={<SwitchIcon />}
                     title='Change Log Type'
-                    subTitle='Logged entry current identified as "Task"'
+                    subtitle='Logged entry current identified as "Task"'
                     onPress={() => alert("Button pressed!")}
                 />
             </CardWrapper>

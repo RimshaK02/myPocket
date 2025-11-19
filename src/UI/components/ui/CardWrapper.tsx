@@ -76,7 +76,7 @@ const CardWrapper = ({children, style, header}: React.PropsWithChildren<CardWrap
 const styles = StyleSheet.create({
     container: {
         width: "100%",
-        gap: 4.5,
+        gap: 7,
         justifyContent: "center",
         alignContent: "center",
     },
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
         paddingLeft: 16.5
     },
     header: {
-        fontSize: 12,
+        fontSize: 13,
         color: CLR_DARK,
         fontWeight: 400,
         letterSpacing: -0.4

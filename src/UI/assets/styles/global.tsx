@@ -32,7 +32,7 @@ export default StyleSheet.create({
         lineHeight: 27.50, 
     },
     txtPnlTitle: {
-        color: CLR_DARK, 
+        color: CLR_DARK,
         fontFamily: 'Poppins-Medium',
         fontSize: 15, 
         fontWeight: 500, 
@@ -43,7 +43,7 @@ export default StyleSheet.create({
         fontSize: 10.5,
         fontStyle: 'normal',
         fontWeight: 300,
-        letterSpacing: -0.16,
+        letterSpacing: -0.16
     },
     card: {
         width: "100%",
@@ -56,7 +56,7 @@ export default StyleSheet.create({
         paddingLeft: 17,
         paddingRight: 7,
         paddingTop: 15,
-        paddingBottom: 18,
+        paddingBottom: 18
     },
     button: {
         flexDirection: 'row',
@@ -82,7 +82,10 @@ export default StyleSheet.create({
         fontWeight: '600',
         letterSpacing: -0.16,
     },
-    switch: {
+    switchCard: {
+        position: "absolute",
+        right: "5%",
+        // backgroundColor: "blue",
         transform: Platform.OS === 'ios' ? [
             { scaleX: 0.7 }, 
             { scaleY: 0.7 }

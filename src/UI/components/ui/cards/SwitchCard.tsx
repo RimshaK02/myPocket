@@ -2,7 +2,7 @@
 // be run everytime the switch is toggled on or off.
 
 // React/React Native imports
-import { Text, View, StyleProp, ViewStyle,  Pressable, StyleSheet, Switch } from 'react-native';
+import { Text, View, StyleProp, ViewStyle, TextStyle, Pressable, StyleSheet, Switch } from 'react-native';
 import React, { ReactNode, useState } from 'react';
 
 // Local imports
@@ -10,9 +10,11 @@ import GlobalStyles, { CLR_DARK, CLR_SECONDARY, CLR_LIGHT } from "@/assets/style
 
 // Structure + types of props passed into card with switch
 interface SwitchCardProps {
-    style?: StyleProp<ViewStyle>,  // Optional extra styling components, if necessary
+    cardStyle?: StyleProp<ViewStyle>,  // Optional extra styling components, if necessary
+    titleStyle?: StyleProp<TextStyle>,  // Optional extra styling components, if necessary
+    subtitleStyle?: StyleProp<TextStyle>,  // Optional extra styling components, if necessary
     title: string,                 // Title text in card
-    subTitle?: string,             // Optional subtitle text in card
+    subtitle?: string,             // Optional subtitle text in card
     icon?: ReactNode,              // SVG or PNG image, pass as React component in tags
     pos?: string,                   // top, middle, bottom, single; influences corner radius
     onFunc: () => any,             // Function called when switch is toggled on
@@ -36,7 +38,8 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         justifyContent: "center",
         alignContent: "center",
-        gap: 3
+        gap: 3,
+        width: "80%"
     },
     switchWrapper: {
         width: "auto",
@@ -59,7 +62,7 @@ const styles = StyleSheet.create({
 });
 
 // Required to nest NestedNavBtn inside a Stack.Navigator tag somewhere
-const SwitchCard = ({style, title, subTitle, icon, pos="single", onFunc, offFunc}: SwitchCardProps) => {
+const SwitchCard = ({cardStyle, titleStyle, subtitleStyle, title, subtitle, icon, pos="single", onFunc, offFunc}: SwitchCardProps) => {
     // Switch constants
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => {
@@ -79,7 +82,7 @@ const SwitchCard = ({style, title, subTitle, icon, pos="single", onFunc, offFunc
             style={[
                 GlobalStyles.card,
                 posMapping[pos],
-                style,
+                cardStyle,
             ]}
         >   
             <View style={styles.contentWrapper}>
@@ -92,13 +95,13 @@ const SwitchCard = ({style, title, subTitle, icon, pos="single", onFunc, offFunc
 
                 {/* Text wrapper */}
                 <View style={styles.textWrapper}>
-                    <Text style={GlobalStyles.txtPnlTitle}>
+                    <Text style={[GlobalStyles.txtPnlTitle, titleStyle]}>
                         {title}
                     </Text>
                     {/* Optional subtitle, if it is passed through props */}
-                    {(typeof subTitle !== 'undefined') &&
-                        <Text style={GlobalStyles.txtPnlSubtitle}>
-                            {subTitle}
+                    {(typeof subtitle !== 'undefined') &&
+                        <Text style={[GlobalStyles.txtPnlSubtitle, subtitleStyle]}>
+                            {subtitle}
                         </Text>
                     }
                 </View>
@@ -108,7 +111,7 @@ const SwitchCard = ({style, title, subTitle, icon, pos="single", onFunc, offFunc
             {/* Switch */}
             <View style={styles.switchWrapper}>
                 <Switch 
-                    style={GlobalStyles.switch}
+                    style={GlobalStyles.switchCard}
                     trackColor={{
                         false: "#9A9A9A",
                         true: "#0088bdff"

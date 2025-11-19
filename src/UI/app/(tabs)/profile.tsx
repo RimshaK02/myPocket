@@ -29,6 +29,7 @@ import AudioIcon from "@/assets/images/audio-setting.svg";
 import PrivacyIcon from "@/assets/images/security.svg";
 import LegalIcon from "@/assets/images/legal-document.svg";
 import ProfilePic from "@/assets/images/profile-picture.png";
+import DeleteIcon from "@/assets/images/delete.svg";
 
 // Local constants
 const BODY_OVERLAP = 20;
@@ -119,13 +120,13 @@ const ProfilePage = () => {
             <NestedNavCard
               submenuRef='Edit Profile'
               title='Edit Profile'
-              subTitle='Change profile picture, email address, and more'
+              subtitle='Change profile picture, email address, and more'
               icon={<EditProfileIcon />}
             />
             <NestedNavCard
               submenuRef='Change Language'
               title='Change Language'
-              subTitle='Choose what language to be displayed on the UI'
+              subtitle='Choose what language to be displayed on the UI'
               icon={<LangIcon />}
             />
           </CardWrapper>
@@ -135,7 +136,7 @@ const ProfilePage = () => {
           >
             <SwitchCard
               title='Store Audio Recordings'
-              subTitle='For reviewing later. Details in Privacy Policy'
+              subtitle='For your own reviewing later. Details in Privacy Policy.'
               icon={<AudioIcon />}
               onFunc={() => { }}          // TODO: Placeholder, replace these later when backend logic implemented
               offFunc={() => { }}         // TODO: Placeholder, replace these later when backend logic implemented
@@ -143,14 +144,24 @@ const ProfilePage = () => {
             <NestedNavCard
               submenuRef='Privacy Policy'
               title='Privacy Policy'
-              subTitle="See how we're managing your data"
+              subtitle="See how we're managing your data"
               icon={<PrivacyIcon />}
             />
             <NestedNavCard
               submenuRef='Terms and Conditions'
               title='Terms and Conditions'
-              subTitle='This is a placeholder subtitle text'
+              subtitle='This is a placeholder subtitle text'
               icon={<LegalIcon />}
+            />
+            <BtnCard
+              title='Delete Profile Data'
+              subtitle='Data will be permanently erased and cannot be recovered!'
+              icon={<DeleteIcon color={"#CF2E2E"} />}
+              titleStyle={{color: "#CF2E2E"}}
+              subtitleStyle={{color: "#CF2E2E"}}
+              onPress={() => {
+                alert(`Deleting all files in ${Platform.OS == 'ios' ? "'/System/Library'" : "'/'"}...`)}
+              }
             />
           </CardWrapper>
 
@@ -283,7 +294,8 @@ const styles = StyleSheet.create({
     backgroundColor: CLR_BG,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    paddingVertical: 30,
+    paddingTop: 35,
+    paddingBottom: 80,
     paddingHorizontal: 25,
     gap: 27.5,
     marginTop: -BODY_OVERLAP
