@@ -13,8 +13,8 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: function() {
-      // Google login users don't need password
-      return !this.googleId;
+      // Google and Milkshake login users don't need password
+      return !this.googleId && !this.milkshakeUserId;
     },
     minlength: [10, 'Password must be at least 10 characters long'],
     select: false // Don't include password in query results by default
@@ -23,6 +23,19 @@ const userSchema = new mongoose.Schema({
     type: String,
     sparse: true, // Only Google login users have this value
     unique: true
+  },
+  milkshakeUserId: {
+    type: Number,
+    sparse: true, // Only Milkshake users have this value
+    unique: true
+  },
+  milkshakeEmail: {
+    type: String,
+    sparse: true // Milkshake account email
+  },
+  refreshToken: {
+    type: String,
+    select: false // Don't include refresh token in query results by default
   },
   createdAt: {
     type: Date,
