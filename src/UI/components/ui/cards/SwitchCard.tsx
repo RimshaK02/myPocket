@@ -1,4 +1,4 @@
-// SwitchCard.tsx: Component for panels with toggle switches on them. You can pass one or two functions through props to 
+// SwitchCard.tsx: Component for cards with toggle switches on them. You can pass one or two functions through props to 
 // be run everytime the switch is toggled on or off.
 
 // React/React Native imports
@@ -11,8 +11,8 @@ import GlobalStyles, { CLR_DARK, CLR_SECONDARY, CLR_LIGHT } from "@/assets/style
 // Structure + types of props passed into card with switch
 interface SwitchCardProps {
     style?: StyleProp<ViewStyle>,  // Optional extra styling components, if necessary
-    title: string,                 // Title text in panel
-    subTitle?: string,             // Optional subtitle text in panel
+    title: string,                 // Title text in card
+    subTitle?: string,             // Optional subtitle text in card
     icon?: ReactNode,              // SVG or PNG image, pass as React component in tags
     pos?: string,                   // top, middle, bottom, single; influences corner radius
     onFunc: () => any,             // Function called when switch is toggled on
@@ -20,7 +20,7 @@ interface SwitchCardProps {
 };
 
 // For creating a "dictionary" mapping of string to stylesheet values, 
-// maps styles based on given panel order
+// maps styles based on given card order
 interface IPosMapping {
     [id: string] : StyleProp<ViewStyle>
 }
@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         justifyContent: "center",
         alignContent: "center",
+        gap: 3
     },
     switchWrapper: {
         width: "auto",
@@ -47,11 +48,11 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignContent: "center"
     },
-    panelTop: {
+    cardTop: {
         borderTopLeftRadius: 8,
         borderTopRightRadius: 8
     },
-    panelBottom: {
+    cardBottom: {
         borderBottomLeftRadius: 8,
         borderBottomRightRadius: 8
     }
@@ -67,16 +68,16 @@ const SwitchCard = ({style, title, subTitle, icon, pos="single", onFunc, offFunc
     };
 
     const posMapping: IPosMapping = {
-        "top": styles.panelTop,
+        "top": styles.cardTop,
         "middle": [{}],
-        "bottom": styles.panelBottom,
-        "single": [styles.panelBottom, styles.panelTop],
+        "bottom": styles.cardBottom,
+        "single": [styles.cardBottom, styles.cardTop],
     }
 
     return(
         <View 
             style={[
-                GlobalStyles.panel,
+                GlobalStyles.card,
                 posMapping[pos],
                 style,
             ]}
@@ -110,10 +111,10 @@ const SwitchCard = ({style, title, subTitle, icon, pos="single", onFunc, offFunc
                     style={GlobalStyles.switch}
                     trackColor={{
                         false: "#9A9A9A",
-                        true: CLR_SECONDARY
+                        true: "#0088bdff"
                     }}
                     thumbColor={CLR_LIGHT}
-                    ios_backgroundColor="#898989"
+                    ios_backgroundColor="rgba(132, 132, 132, 1)"
                     onValueChange={toggleSwitch}
                     value={isEnabled}
                 />

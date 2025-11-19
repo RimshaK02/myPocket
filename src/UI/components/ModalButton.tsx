@@ -1,26 +1,27 @@
-import { View, Text, Pressable } from 'react-native';
-import { StyleSheet } from 'react-native';
+import { View, Text, Pressable, StyleProp, ViewStyle } from 'react-native';
+import { ReactNode } from 'react';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 export interface ModalButtonProps {
+  extraStyles?: StyleProp<ViewStyle>,  // Optional extra styling components, if necessary
   onPress: () => void;
   color: string;
   title: string;
   size: number;
-  iconName: any;
+  icon: ReactNode;
 }
 
-export default function ModalButton({ onPress, color, title, size, iconName }: ModalButtonProps) {
+export default function ModalButton({ extraStyles, onPress, color, title, size, icon }: ModalButtonProps) {
   return (
     <View
-      style={{
+      style={[{
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 20,
         marginRight: 10,
         marginLeft: 10,
         width: 100,
-      }}
+      }, extraStyles]}
     >
       <Pressable
         onPress={onPress}
@@ -36,7 +37,8 @@ export default function ModalButton({ onPress, color, title, size, iconName }: M
           marginBottom: 6,
         }}
       >
-        <MaterialCommunityIcons name={iconName} size={size / 2} color="white" />
+        {icon}
+        {/* <MaterialCommunityIcons name={iconName} size={size / 2} color="white" /> */}
       </Pressable>
       <Text style={{ fontSize: 12, color: 'white' }}>{title}</Text>
     </View>

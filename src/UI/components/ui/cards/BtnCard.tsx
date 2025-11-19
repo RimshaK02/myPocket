@@ -1,4 +1,4 @@
-// BtnCard.tsx: Component for panels to open submenus
+// BtnCard.tsx: Component for cards to open submenus
 
 // React/React Native imports
 import { Text, View, StyleProp, ViewStyle,  Pressable, StyleSheet } from 'react-native';
@@ -13,8 +13,8 @@ import NavArrow from "@/assets/images/nav-arrow.svg";
 
 interface BtnCardProps {
     style?: StyleProp<ViewStyle>,  // Optional extra styling components, if necessary
-    title: string,                 // Title text in panel
-    subTitle?: string,             // Optional subtitle text in panel
+    title: string,                 // Title text in card
+    subTitle?: string,             // Optional subtitle text in card
     icon?: ReactNode,              // SVG or PNG image, pass as React component in tags
     pos?: string,                   // top, middle, bottom, single; influences corner radius
     onPress: () => any             // Function called when button is pressed
@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         justifyContent: "center",
         alignContent: "center",
+        gap: 3
     },
     arrowWrapper: {
         width: "auto",
@@ -46,14 +47,14 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignContent: "center"
     },
-    panel:{
+    card:{
         paddingRight: 15,
     },
-    panelTop: {
+    cardTop: {
         borderTopLeftRadius: 8,
         borderTopRightRadius: 8
     },
-    panelBottom: {
+    cardBottom: {
         borderBottomLeftRadius: 8,
         borderBottomRightRadius: 8
     }
@@ -64,17 +65,17 @@ const BtnCard = ({style, title, subTitle, icon, pos="single", onPress}: BtnCardP
     const nav = useNavigation();
 
     const posMapping: IPosMapping = {
-        "top": styles.panelTop,
+        "top": styles.cardTop,
         "middle": [{}],
-        "bottom": styles.panelBottom,
-        "single": [styles.panelBottom, styles.panelTop],
+        "bottom": styles.cardBottom,
+        "single": [styles.cardBottom, styles.cardTop],
     }
 
     return(
         <Pressable 
             style={[
-                GlobalStyles.panel,
-                styles.panel,
+                GlobalStyles.card,
+                styles.card,
                 posMapping[pos],
                 style,
             ]}

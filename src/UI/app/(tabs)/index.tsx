@@ -2,6 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, ScrollView, StatusBar } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { LogProps } from '@/components/LogCard';
+import { router } from 'expo-router';
+import { Button } from '@react-navigation/elements';
 
 const dummyData: LogProps[] = [
   {
@@ -41,8 +43,14 @@ export default function LogsScreen() {
       <SafeAreaView style={styles.container} edges={['top']}>
         <ScrollView>
           <Text style={styles.text}>TODO: Logged Recordings</Text>
-          {/* TODO: Implement a list of log cards using FlatList and the LogCard component. Populate the
-          list with dummyData. */}
+          <Button 
+            style={{ width: "90%", alignSelf: "center" }} 
+            onPressOut={() => router.push("/test-component")} 
+          >
+            Test Component Showcase
+          </Button>
+          {/* TODO: Implement a list of log cards using FlatList and single BackNavBtn components nested in CardWrapper containers. 
+          Populate the list with dummyData. */}
         </ScrollView>
       </SafeAreaView>
     </SafeAreaProvider>

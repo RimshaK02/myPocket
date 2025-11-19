@@ -19,6 +19,7 @@ import SwitchCard from '@/components/ui/cards/SwitchCard';
 import BackNavBtn from '@/components/ui/BackNavBtn';
 import BtnCard from '@/components/ui/cards/BtnCard';
 import DynamicStatusBar, { DynamicStatusBarHandle } from '@/components/ui/DynamicStatusBar';
+import { TASKBAR_HEIGHT } from './_layout';
 
 // Image imports
 import HeroBG from "@/assets/images/profile-bg.png";
@@ -30,255 +31,263 @@ import LegalIcon from "@/assets/images/legal-document.svg";
 import ProfilePic from "@/assets/images/profile-picture.png";
 
 // Local constants
-const HERO_HEIGHT = (Platform.OS === "ios" ? 150 : 150) + Constants.statusBarHeight;  // Scale based on OS status bar
+const BODY_OVERLAP = 20;
+const HERO_HEIGHT = 150 + BODY_OVERLAP + Constants.statusBarHeight;  // Scale based on OS status bar
 
 // Props interfaces
 interface TempPageProps {   // remove this later, ofc
-    header: string
+  header: string
 }
 
 // Components
 const ProfilePage = () => {
-    const scrollRef = useAnimatedRef<Animated.ScrollView>();
- 	const scrollOffset = useScrollOffset(scrollRef);
-    const yPosRef = useRef<DynamicStatusBarHandle | null>(null);
-    const yPosThreshold = 215
+  const scrollRef = useAnimatedRef<Animated.ScrollView>();
+  const scrollOffset = useScrollOffset(scrollRef);
+  const yPosRef = useRef<DynamicStatusBarHandle | null>(null);
+  const yPosThreshold = 215
 
-    const handleScroll = (event: any) => { 
-        yPosRef.current?.updateYPos?.(event.nativeEvent.contentOffset.y);
+  const handleScroll = (event: any) => {
+    yPosRef.current?.updateYPos?.(event.nativeEvent.contentOffset.y);
+  };
+
+  const heroAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateY: interpolate(
+            scrollOffset.value,
+            [-HERO_HEIGHT, 0, HERO_HEIGHT],
+            [-HERO_HEIGHT / 2, 0, HERO_HEIGHT * 0.75]
+          )
+        },
+        {
+          scale: interpolate(
+            scrollOffset.value,
+            [-HERO_HEIGHT, 0, HERO_HEIGHT],
+            [1, 1, 1])
+        }
+
+      ]
     };
+  });
 
-    const heroAnimatedStyle = useAnimatedStyle(() => {
-        return {
-            transform: [
-                {
-                    translateY: interpolate(
-                        scrollOffset.value,
-                        [-HERO_HEIGHT, 0, HERO_HEIGHT],
-                        [-HERO_HEIGHT / 2, 0, HERO_HEIGHT * 0.75]
-                    )
-                },
-                {
-                    scale: interpolate(
-                        scrollOffset.value, 
-                        [-HERO_HEIGHT, 0, HERO_HEIGHT], 
-                        [1, 1, 1])
-                }
-                
-            ]
-        };
-    });
+  return (
+    <View style={styles.bg}>
+      <DynamicStatusBar
+        ref={yPosRef}
+        yPosThreshold={yPosThreshold}
+      />
 
-    return (
-        <View style={styles.bg}>
-            <DynamicStatusBar
-                ref={yPosRef}
-                yPosThreshold={yPosThreshold}
+      <Animated.ScrollView
+        ref={scrollRef}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
+        alwaysBounceVertical={false}
+        bounces={false}
+        overScrollMode="never"
+        indicatorStyle="black"
+      >
+        {/* Parallax hero banner */}
+        <Animated.View style={[styles.heroWrapper]}>
+          <Animated.Image
+            source={HeroBG}
+            style={[styles.heroBG, heroAnimatedStyle]}
+          />
+          <Animated.View style={[styles.heroContent, heroAnimatedStyle]}
+          >
+            <View style={styles.textWrapper}>
+              <Text style={[GlobalStyles.txt, styles.textSubtitle]}>
+                Hey there,
+              </Text>
+              {/* TODO: Name is placeholder, replace below with actual acc name from backend */}
+              <Text style={[GlobalStyles.txt, styles.textTitle]}>
+                {"Jonathan Williams"}.
+              </Text>
+            </View>
+            <Image
+              style={styles.profileImg}
+              source={ProfilePic}
             />
+          </Animated.View>
+        </Animated.View>
 
-            <Animated.ScrollView 
-                ref={scrollRef} 
-                onScroll={handleScroll}
-                scrollEventThrottle={16}
-                alwaysBounceVertical={false}
-                bounces={false}
-                overScrollMode="never"
-            >
-                {/* Parallax hero banner */}
-                <Animated.View style={[styles.heroWrapper]}>
-                    <Animated.Image 
-                        source={HeroBG}
-                        style={[styles.heroBG, heroAnimatedStyle]}
-                    />
-                    <Animated.View style={[styles.heroContent, heroAnimatedStyle]}
-                    >
-                        <View style={styles.textWrapper}>
-                            <Text style={[GlobalStyles.txt, styles.textSubtitle]}>
-                                Hey there,
-                            </Text>
-                            {/* TODO: Name is placeholder, replace below with actual acc name from backend */}
-                            <Text style={[GlobalStyles.txt, styles.textTitle]}>
-                                {"Jonathan Williams"}.     
-                            </Text>
-                        </View>
-                        <Image
-                            style={styles.profileImg}
-                            source={ProfilePic}
-                        />
-                    </Animated.View>
-                </Animated.View>
+        <View style={styles.contentContainer}>
+          {/* Body content */}
+          <CardWrapper
+            header='Account Settings'
+          >
+            <NestedNavCard
+              submenuRef='Edit Profile'
+              title='Edit Profile'
+              subTitle='Change profile picture, email address, and more'
+              icon={<EditProfileIcon />}
+            />
+            <NestedNavCard
+              submenuRef='Change Language'
+              title='Change Language'
+              subTitle='Choose what language to be displayed on the UI'
+              icon={<LangIcon />}
+            />
+          </CardWrapper>
 
-                <View style={styles.contentContainer }>
-                    {/* Body content */}
-                    <CardWrapper
-                        header='Account Settings'
-                    >
-                        <NestedNavCard 
-                            submenuRef='Temp1'
-                            title='Edit Profile'
-                            subTitle='Change profile picture, email address, and more'
-                            icon={<EditProfileIcon />} 
-                        />
-                        <NestedNavCard 
-                            submenuRef='Temp2'
-                            title='Change Language'
-                            subTitle='Choose what language to be displayed on the UI'
-                            icon={<LangIcon />}                         
-                        />
-                    </CardWrapper>
+          <CardWrapper
+            header='Permissions & Data Usage'
+          >
+            <SwitchCard
+              title='Store Audio Recordings'
+              subTitle='For reviewing later. Details in Privacy Policy'
+              icon={<AudioIcon />}
+              onFunc={() => { }}          // TODO: Placeholder, replace these later when backend logic implemented
+              offFunc={() => { }}         // TODO: Placeholder, replace these later when backend logic implemented
+            />
+            <NestedNavCard
+              submenuRef='Privacy Policy'
+              title='Privacy Policy'
+              subTitle="See how we're managing your data"
+              icon={<PrivacyIcon />}
+            />
+            <NestedNavCard
+              submenuRef='Terms and Conditions'
+              title='Terms and Conditions'
+              subTitle='This is a placeholder subtitle text'
+              icon={<LegalIcon />}
+            />
+          </CardWrapper>
 
-                    <CardWrapper
-                        header='Account Settings'
-                    >
-                        <SwitchCard
-                            title='Store Audio Recordings'
-                            subTitle='For your own reviewing later. Details in Privacy Policy'
-                            icon={<AudioIcon />} 
-                            onFunc={() => {}}          // TODO: Placeholder, replace these later when backend logic implemented
-                            offFunc={() => {}}         // TODO: Placeholder, replace these later when backend logic implemented
-                        />
-                        <NestedNavCard 
-                            submenuRef='Temp3'
-                            title='Privacy Policy'
-                            subTitle="See how we're managing your data"
-                            icon={<PrivacyIcon />}                         
-                        />
-                        <NestedNavCard 
-                            submenuRef='Temp4'
-                            title='Terms and Conditions'
-                            subTitle='This is a placeholder subtitle text'
-                            icon={<LegalIcon />}                         
-                        />
-                    </CardWrapper>
-
-                </View>
-            </Animated.ScrollView>
         </View>
-    );
+      </Animated.ScrollView>
+    </View>
+  );
 };
 
 // Placeholder, replace with actual imported subpage contents in ProfileStack below later
-const TempPage = ({header}: TempPageProps) => {
-    return(
-        <SafeAreaView style={{ 
-            width: "100%", 
-            height: "100%",
-            backgroundColor: CLR_BG,
-            // justifyContent: "center",
-            alignContent: "center",
-            paddingTop: 10,
-            paddingBottom: 60,
-            paddingHorizontal: 25
-        }}>
-            <View 
-                style={{
-                    paddingBottom: 17
-                }}
-            >
-                <BackNavBtn isDark={false}/>
-            </View>
-            <Text
-                style={[GlobalStyles.txt, GlobalStyles.txtHeaderPage, {
-                    marginBottom: 20
-                }]}
-            >
-                {header}
-            </Text>
-        </SafeAreaView>
-    )
+const TempPage = ({ header }: TempPageProps) => {
+  return (
+    <SafeAreaView style={{
+      width: "100%",
+      height: "100%",
+      backgroundColor: CLR_BG,
+      // justifyContent: "center",
+      alignContent: "center",
+      paddingTop: 10,
+      paddingBottom: 60,
+      paddingHorizontal: 25
+    }}>
+      <View
+        style={{
+          paddingBottom: 17
+        }}
+      >
+        <BackNavBtn isDark={false} />
+      </View>
+      <Text
+        style={[GlobalStyles.txt, GlobalStyles.txtHeaderPage, {
+          marginBottom: 20
+        }]}
+      >
+        {header}
+      </Text>
+    </SafeAreaView>
+  )
 }
 
 // Main nav stack within profile page
 const ProfileStack = () => {
-    const Stack = createNativeStackNavigator();
+  const Stack = createNativeStackNavigator();
 
-    // Creating a list of subpages just for demo purposes
-    const subpageList: Array<React.ReactNode> = []
-    const subpageNums: Array<number> = [1, 2, 3, 4]
+  // Creating a list of subpages just for demo purposes
+  const subpageList: Array<React.ReactNode> = []
+  const subpageNums: Array<string> = [
+    'Edit Profile', 
+    'Change Language',
+    'Privacy Policy', 
+    'Terms and Conditions'
+  ]
 
-    subpageNums.forEach(num => {
-        subpageList.push(
-            <Stack.Screen 
-                name={`Temp${num}`}
-                options={{headerShown: false}}
-                key={`temp-${num}`}
-            >
-                {() => TempPage({header: `Temp #${num}`})}
-            </Stack.Screen>
-        )
-    });
-
-    return(
-        <Stack.Navigator>
-            <Stack.Screen 
-                name="Main"
-                component={ProfilePage}
-                options={{ headerShown: false }}
-            />
-            {subpageList}
-        </Stack.Navigator>
+  subpageNums.forEach(pgName => {
+    subpageList.push(
+      <Stack.Screen
+        name={pgName}
+        options={{ headerShown: false }}
+        key={`temp-${pgName}`}
+      >
+        {() => TempPage({ header: pgName })}
+      </Stack.Screen>
     )
+  });
+
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Main"
+        component={ProfilePage}
+        options={{ headerShown: false }}
+      />
+      {subpageList}
+    </Stack.Navigator>
+  )
 }
 
 const styles = StyleSheet.create({
-    bg: {
-
-    },
-    scrollWrapper: {
-        backgroundColor: "none"
-    },
-    heroWrapper: {
-        backgroundColor: "#000000",
-        width: Dimensions.get("window").width,
-        height: HERO_HEIGHT,
-    },
-    heroBG: {
-        width: "100%",
-        height: "100%",
-        opacity: 0.5
-    },
-    heroContent: {
-        position: "absolute",
-        height: "100%",
-        width: "100%",
-        paddingTop: Platform.OS == "ios" ? 83 : 63,
-        paddingHorizontal: 25,
-        flexDirection: "row",
-        justifyContent: 'space-between',
-        alignContent: "center"
-    },
-    profileImg: {
-        width: 70,
-        height: 70,
-        borderColor: CLR_SECONDARY,
-        borderWidth: 2,
-        borderRadius: 1000
-    },
-    textWrapper: {
-        gap: 7
-    },
-    textSubtitle: {
-        fontSize: 20,
-        color: CLR_LIGHT,
-        fontWeight: 400,
-        letterSpacing: -0.4
-    },
-    textTitle: {
-        fontSize: 26,
-        color: CLR_LIGHT,
-        fontWeight: 600,
-        letterSpacing: -0.4
-    },
-    contentContainer: {
-        minHeight: Dimensions.get("window").height, 
-        height: "auto",
-        backgroundColor: CLR_BG,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-        paddingVertical: 30,
-        paddingHorizontal: 25,
-        gap: 27.5
-    }
+  bg: {
+    backgroundColor: CLR_BG
+  },
+  scrollWrapper: {
+    backgroundColor: "none"
+  },
+  heroWrapper: {
+    backgroundColor: "#000000",
+    width: Dimensions.get("window").width,
+    height: HERO_HEIGHT,
+  },
+  heroBG: {
+    width: "100%",
+    height: "100%",
+    opacity: 0.5
+  },
+  heroContent: {
+    position: "absolute",
+    height: "100%",
+    width: "100%",
+    paddingTop: Platform.OS == "ios" ? 83 : 63,
+    paddingHorizontal: 25,
+    flexDirection: "row",
+    justifyContent: 'space-between',
+    alignContent: "center"
+  },
+  profileImg: {
+    width: 70,
+    height: 70,
+    borderColor: CLR_SECONDARY,
+    borderWidth: 2,
+    borderRadius: 1000
+  },
+  textWrapper: {
+    gap: 7
+  },
+  textSubtitle: {
+    fontSize: 20,
+    color: CLR_LIGHT,
+    fontWeight: 400,
+    letterSpacing: -0.4
+  },
+  textTitle: {
+    fontSize: 26,
+    color: CLR_LIGHT,
+    fontWeight: 600,
+    letterSpacing: -0.4
+  },
+  contentContainer: {
+    minHeight: Dimensions.get("window").height + BODY_OVERLAP - HERO_HEIGHT - TASKBAR_HEIGHT,
+    height: "auto",
+    backgroundColor: CLR_BG,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    paddingVertical: 30,
+    paddingHorizontal: 25,
+    gap: 27.5,
+    marginTop: -BODY_OVERLAP
+  }
 });
 
 export default ProfileStack;

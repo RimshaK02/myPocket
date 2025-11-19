@@ -34,18 +34,18 @@ export default StyleSheet.create({
     txtPnlTitle: {
         color: CLR_DARK, 
         fontFamily: 'Poppins-Medium',
-        fontSize: 14, 
+        fontSize: 15, 
         fontWeight: 500, 
     },
     txtPnlSubtitle: {
         color: CLR_DARK,
         fontFamily: 'Poppins-Light',
-        fontSize: 8,
+        fontSize: 10.5,
         fontStyle: 'normal',
         fontWeight: 300,
         letterSpacing: -0.16,
     },
-    panel: {
+    card: {
         width: "100%",
         height: "auto",
         minHeight: 66,

@@ -8,6 +8,10 @@ import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
+import PhoneLockIcon from '@/assets/images/phone-lock.svg';
+import TriggerIcon from '@/assets/images/ear.svg';
+import MicStopIcon from '@/assets/images/mic-stop.svg';
+
 export default function ModalScreen() {
   const [triggered, setTriggered] = useState(false);
   const colorScheme = useColorScheme();
@@ -18,8 +22,7 @@ export default function ModalScreen() {
         <Pressable
           style={styles.exit}
           onPress={() => {
-            router.dismiss(); // close the modal
-            router.replace('/'); // go to home
+            router.back();  // close the modal and return to previous page
           }}
         >
           <Entypo name="cross" size={20} color="#FFFFFF" />
@@ -55,6 +58,7 @@ export default function ModalScreen() {
           justifyContent: 'center',
           alignItems: 'flex-end',
           flexDirection: 'row',
+          paddingBottom: 12
         }}
       >
         <ModalButton
@@ -62,17 +66,16 @@ export default function ModalScreen() {
           color={colors.secondaryButton}
           title="Lock Screen"
           size={50}
-          iconName={'cellphone-lock'}
+          icon={<PhoneLockIcon color={"white"} width={26} height={26}/>}
         />
         <ModalButton
           onPress={() => {
-            router.dismiss();
-            router.replace('/');
+            router.back();
           }}
           color={colors.primaryButton}
           title="Stop Listening"
           size={70}
-          iconName={'square-rounded-outline'}
+          icon={<MicStopIcon color={"white"} width={36} height={36} />}
         />
         <ModalButton
           onPress={() => {
@@ -81,7 +84,7 @@ export default function ModalScreen() {
           color={colors.secondaryButton}
           title="Manual Trigger"
           size={50}
-          iconName={'ear-hearing'}
+          icon={<TriggerIcon color={"white"} width={26} height={26}/>}
         />
       </View>
     </>

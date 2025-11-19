@@ -1,5 +1,5 @@
 import { Tabs, router } from 'expo-router';
-import { Image, Pressable, StyleSheet, Text } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, Platform } from 'react-native';
 import React from 'react';
 
 import { HapticTab } from '@/components/haptic-tab';
@@ -8,6 +8,9 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 import MicIcon from '@/assets/images/mic.svg';
 import ProfileIcon from "@/assets/images/profile.svg";
 import LogsIcon from "@/assets/images/logs.svg";
+
+
+export const TASKBAR_HEIGHT = 93;
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -20,6 +23,10 @@ export default function TabLayout() {
         tabBarButton: HapticTab,
         tabBarStyle: {
           backgroundColor: Colors[colorScheme ?? 'light'].tabBar,
+          minHeight: TASKBAR_HEIGHT,
+          height: "auto",
+          paddingTop: 8,
+          paddingHorizontal: 10
         },
       }}
     >
@@ -27,6 +34,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Logs',
+          tabBarLabelStyle: styles.tabLabel,
           tabBarIcon: ({ color }) => (
             <LogsIcon color={color} />
             // <Image source={LogsIcon} style={{ tintColor: color }} />
@@ -40,9 +48,9 @@ export default function TabLayout() {
           tabBarButton: () => (
             <Pressable style={styles.fabContainer} onPress={() => router.push('/modal')}>
               <Pressable style={styles.fab} onPress={() => router.push('/modal')}>
-                <MicIcon width={32} height={32} color={'#fff'} />
+                <MicIcon width={40} height={40} color={'#fff'} />
               </Pressable>
-              <Text style={styles.fabLabel}>Start Listening</Text>
+              <Text style={[styles.tabLabel, styles.fabLabel]}>Start Listening</Text>
             </Pressable>
           ),
         }}
@@ -54,17 +62,10 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: 'Profile',
+          tabBarLabelStyle: styles.tabLabel,
           tabBarIcon: ({ color }) => (
             <ProfileIcon color={color} />
-            // <Image source={} style={{ tintColor: color }} />
           ),
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: 'Profile',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="person.fill" color={color} />,
         }}
       />
     </Tabs>
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
     borderColor: '#fff',
     borderWidth: 2,
     position: 'absolute',
-    bottom: 16,
+    bottom: (Platform.OS === 'ios' ? 20 : 30 ),
     alignSelf: 'center',
     width: 80,
     height: 80,
@@ -96,8 +97,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   fabLabel: {
-    fontSize: 12,
+    // fontSize: 12,
     color: '#fff',
-    marginTop: 32,
+    marginTop: (Platform.OS === 'ios' ? 33 : 25 ),
   },
+  tabLabel: {
+    fontSize: 15,
+    // fontFamily: "Poppins",
+    fontWeight: 500,
+    letterSpacing: -0.4,
+    textAlign: "center"    
+  }
 });
