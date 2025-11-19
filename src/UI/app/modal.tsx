@@ -1,17 +1,90 @@
-import { Link } from 'expo-router';
-import { StyleSheet } from 'react-native';
-
+import { router } from 'expo-router';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import Entypo from '@expo/vector-icons/Entypo';
+import ModalButton from '@/components/ModalButton';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { Colors } from '@/constants/theme';
+import { useColorScheme } from '@/hooks/use-color-scheme';
 
 export default function ModalScreen() {
+  const [triggered, setTriggered] = useState(false);
+  const colorScheme = useColorScheme();
+  const colors = Colors[colorScheme ?? 'light'];
   return (
-    <ThemedView style={styles.container}>
-      <ThemedText type="title">This is a modal</ThemedText>
-      <Link href="/" dismissTo style={styles.link}>
-        <ThemedText type="link">Go to home screen</ThemedText>
-      </Link>
-    </ThemedView>
+    <>
+      <ThemedView style={styles.container}>
+        <Pressable
+          style={styles.exit}
+          onPress={() => {
+            router.dismiss(); // close the modal
+            router.replace('/'); // go to home
+          }}
+        >
+          <Entypo name="cross" size={20} color="#FFFFFF" />
+        </Pressable>
+        <View style={styles.pulse}>
+          <Image
+            source={require('@/assets/images/pixel_cow_sprite_3.png')}
+            style={{ width: 100, height: 100 }}
+          />
+        </View>
+        {triggered ? (
+          <>
+            <ThemedText type="subtitle">Trigger word detected, recording...</ThemedText>
+            <Text style={[styles.secondaryText, { color: '#44869F' }]}>
+              ... Pocket AI, cow 420 seems to have a limp, assign Jason to take a look at it late in
+              the
+            </Text>
+          </>
+        ) : (
+          <>
+            <ThemedText type="subtitle">Listening for the trigger word...</ThemedText>
+            <Text style={styles.secondaryText}>
+              Say "Hey Pocket", followed by a phrase or command
+            </Text>
+          </>
+        )}
+      </ThemedView>
+      <View
+        style={{
+          height: 140,
+          width: '100%',
+          backgroundColor: colors.tabBar,
+          justifyContent: 'center',
+          alignItems: 'flex-end',
+          flexDirection: 'row',
+        }}
+      >
+        <ModalButton
+          onPress={() => {}}
+          color={colors.secondaryButton}
+          title="Lock Screen"
+          size={50}
+          iconName={'cellphone-lock'}
+        />
+        <ModalButton
+          onPress={() => {
+            router.dismiss();
+            router.replace('/');
+          }}
+          color={colors.primaryButton}
+          title="Stop Listening"
+          size={70}
+          iconName={'square-rounded-outline'}
+        />
+        <ModalButton
+          onPress={() => {
+            setTriggered(!triggered);
+          }}
+          color={colors.secondaryButton}
+          title="Manual Trigger"
+          size={50}
+          iconName={'ear-hearing'}
+        />
+      </View>
+    </>
   );
 }
 
@@ -22,8 +95,29 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
   },
-  link: {
-    marginTop: 15,
-    paddingVertical: 15,
+  pulse: {
+    backgroundColor: '#9DB38D',
+    height: 200,
+    width: 200,
+    borderRadius: '50%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
+  },
+  exit: {
+    width: 28,
+    height: 28,
+    borderRadius: '50%',
+    position: 'absolute',
+    top: 24,
+    left: 24,
+    backgroundColor: '#DFDFDF',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  secondaryText: {
+    fontStyle: 'italic',
+    textAlign: 'center',
+    marginTop: 20,
   },
 });
