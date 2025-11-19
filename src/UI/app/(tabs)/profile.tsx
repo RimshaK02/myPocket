@@ -4,6 +4,7 @@
 import { Text, View, StyleProp, ViewStyle, Pressable, Dimensions, StyleSheet, StatusBar, Image, Platform } from 'react-native';
 import React, { useRef, useState, useEffect } from 'react';
 import { SvgProps } from "react-native-svg";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { createStaticNavigation, useNavigation, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -28,11 +29,15 @@ import PrivacyIcon from "@/assets/images/security.svg";
 import LegalIcon from "@/assets/images/legal-document.svg";
 import ProfilePic from "@/assets/images/profile-picture.png";
 
-
-
 // Local constants
 const HERO_HEIGHT = (Platform.OS === "ios" ? 150 : 150) + Constants.statusBarHeight;  // Scale based on OS status bar
 
+// Props interfaces
+interface TempPageProps {   // remove this later, ofc
+    header: string
+}
+
+// Components
 const ProfilePage = () => {
     const scrollRef = useAnimatedRef<Animated.ScrollView>();
  	const scrollOffset = useScrollOffset(scrollRef);
@@ -109,13 +114,13 @@ const ProfilePage = () => {
                         header='Account Settings'
                     >
                         <NestedNavCard 
-                            submenuRef=''
+                            submenuRef='Temp1'
                             title='Edit Profile'
                             subTitle='Change profile picture, email address, and more'
                             icon={<EditProfileIcon />} 
                         />
                         <NestedNavCard 
-                            submenuRef=''
+                            submenuRef='Temp2'
                             title='Change Language'
                             subTitle='Choose what language to be displayed on the UI'
                             icon={<LangIcon />}                         
@@ -133,13 +138,13 @@ const ProfilePage = () => {
                             offFunc={() => {}}         // TODO: Placeholder, replace these later when backend logic implemented
                         />
                         <NestedNavCard 
-                            submenuRef=''
+                            submenuRef='Temp3'
                             title='Privacy Policy'
                             subTitle="See how we're managing your data"
                             icon={<PrivacyIcon />}                         
                         />
                         <NestedNavCard 
-                            submenuRef=''
+                            submenuRef='Temp4'
                             title='Terms and Conditions'
                             subTitle='This is a placeholder subtitle text'
                             icon={<LegalIcon />}                         
@@ -151,6 +156,69 @@ const ProfilePage = () => {
         </View>
     );
 };
+
+// Placeholder, replace with actual imported subpage contents in ProfileStack below later
+const TempPage = ({header}: TempPageProps) => {
+    return(
+        <SafeAreaView style={{ 
+            width: "100%", 
+            height: "100%",
+            backgroundColor: CLR_BG,
+            // justifyContent: "center",
+            alignContent: "center",
+            paddingTop: 10,
+            paddingBottom: 60,
+            paddingHorizontal: 25
+        }}>
+            <View 
+                style={{
+                    paddingBottom: 17
+                }}
+            >
+                <BackNavBtn isDark={false}/>
+            </View>
+            <Text
+                style={[GlobalStyles.txt, GlobalStyles.txtHeaderPage, {
+                    marginBottom: 20
+                }]}
+            >
+                {header}
+            </Text>
+        </SafeAreaView>
+    )
+}
+
+// Main nav stack within profile page
+const ProfileStack = () => {
+    const Stack = createNativeStackNavigator();
+
+    // Creating a list of subpages just for demo purposes
+    const subpageList: Array<React.ReactNode> = []
+    const subpageNums: Array<number> = [1, 2, 3, 4]
+
+    subpageNums.forEach(num => {
+        subpageList.push(
+            <Stack.Screen 
+                name={`Temp${num}`}
+                options={{headerShown: false}}
+                key={`temp-${num}`}
+            >
+                {() => TempPage({header: `Temp #${num}`})}
+            </Stack.Screen>
+        )
+    });
+
+    return(
+        <Stack.Navigator>
+            <Stack.Screen 
+                name="Main"
+                component={ProfilePage}
+                options={{ headerShown: false }}
+            />
+            {subpageList}
+        </Stack.Navigator>
+    )
+}
 
 const styles = StyleSheet.create({
     bg: {
@@ -213,4 +281,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default ProfilePage;
+export default ProfileStack;
