@@ -39,9 +39,12 @@
     "react-native-worklets": "0.5.1"
   },
   "devDependencies": {
+    "@react-native-community/eslint-config": "^3.2.0",
     "@types/react": "~19.1.0",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~10.0.0",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.6.2",
     "react-native-svg-transformer": "^1.5.2",
     "typescript": "~5.9.2"
   },
