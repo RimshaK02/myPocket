@@ -160,7 +160,7 @@ const ProfilePage = () => {
               titleStyle={{color: "#CF2E2E"}}
               subtitleStyle={{color: "#CF2E2E"}}
               onPress={() => {
-                alert(`Deleting all files in ${Platform.OS == 'ios' ? "'/System/Library'" : "'/'"}...`)}
+                alert(`Erasing user data...`)}
               }
             />
           </CardWrapper>
