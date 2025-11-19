@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: StatusBar.currentHeight,
+    backgroundColor: "white"
   },
   text: {
     fontSize: 42,
