@@ -6,6 +6,8 @@ import { HapticTab } from '@/components/haptic-tab';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import MicIcon from '@/assets/images/mic.svg';
+import ProfileIcon from "@/assets/images/profile.svg";
+import LogsIcon from "@/assets/images/logs.svg";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -26,7 +28,8 @@ export default function TabLayout() {
         options={{
           title: 'Logs',
           tabBarIcon: ({ color }) => (
-            <Image source={require('@/assets/images/logs.png')} style={{ tintColor: color }} />
+            <LogsIcon color={color} />
+            // <Image source={LogsIcon} style={{ tintColor: color }} />
           ),
         }}
       />
@@ -52,7 +55,8 @@ export default function TabLayout() {
         options={{
           title: 'Profile',
           tabBarIcon: ({ color }) => (
-            <Image source={require('@/assets/images/profile.png')} style={{ tintColor: color }} />
+            <ProfileIcon color={color} />
+            // <Image source={} style={{ tintColor: color }} />
           ),
         }}
       />
