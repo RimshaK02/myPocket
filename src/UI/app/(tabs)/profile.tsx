@@ -138,8 +138,8 @@ const ProfilePage = () => {
               title='Store Audio Recordings'
               subtitle='For your own reviewing later. Details in Privacy Policy.'
               icon={<AudioIcon />}
-              onFunc={() => { }}          // TODO: Placeholder, replace these later when backend logic implemented
-              offFunc={() => { }}         // TODO: Placeholder, replace these later when backend logic implemented
+              onFunc={() => {console.log("'Store Audio Recordings' on")}}          // TODO: Placeholder, replace these later when backend logic implemented
+              offFunc={() => {console.log("'Store Audio Recordings' off")}}         // TODO: Placeholder, replace these later when backend logic implemented
             />
             <NestedNavCard
               submenuRef='Privacy Policy'
