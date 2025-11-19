@@ -17,6 +17,7 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal', headerShown: false }} />
+        <Stack.Screen name="test-component" options={{ title: "Components Testing", headerShown: false }} />
       </Stack>
       <StatusBar style="auto" />
     </ThemeProvider>
