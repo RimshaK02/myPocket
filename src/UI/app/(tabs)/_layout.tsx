@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     marginTop: (Platform.OS === 'ios' ? 33 : 25 ),
   },
   tabLabel: {
-    fontSize: 15,
+    fontSize: 13,
     // fontFamily: "Poppins",
     fontWeight: 500,
     letterSpacing: -0.4,

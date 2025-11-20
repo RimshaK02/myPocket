@@ -45,9 +45,9 @@ export default function LogsScreen() {
           <Text style={styles.text}>TODO: Logged Recordings</Text>
           <Button 
             style={{ width: "90%", alignSelf: "center" }} 
-            onPressOut={() => router.push("/test-component")} 
+            onPressOut={() => router.push("/(auth)/login")} 
           >
-            Test Component Showcase
+            Auth Pages Test
           </Button>
           {/* TODO: Implement a list of log cards using FlatList and single BackNavBtn components nested in CardWrapper containers. 
           Populate the list with dummyData. */}
