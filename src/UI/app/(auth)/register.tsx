@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Image, Pressable, Dimensions, FlatList, Switch, Platform } from "react-native";
+import { StyleSheet, View, Text, Image, Pressable, Dimensions, FlatList, Switch, Platform, Alert } from "react-native";
 import { ReactNode, useState } from "react";
 import { router, useNavigation } from "expo-router";
 import Constants from "expo-constants";
@@ -9,6 +9,7 @@ import { CLR_LIGHT, CLR_SECONDARY } from "@/assets/styles/global";
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import FormField from "@/components/ui/auth/FormField";
+import { useAuth } from '@/contexts/AuthContext';
 
 // Local image imports
 import GoogleIcon from '@/assets/images/google-logo.svg';
@@ -18,26 +19,6 @@ import OutlookIcon from '@/assets/images/outlook-logo.svg';
 // Local constants
 const BODY_OVERLAP = 30;
 const BANNER_HEIGHT = 68 + 16 + 16 + Constants.statusBarHeight;
-
-// Initiate and handle login API calls to backend
-interface RegisterProps {
-  name: string,
-  email: string,
-  password: string,
-  confirmPassword: string,
-  remember: boolean
-}
-
-function register({name, email, password, confirmPassword, remember}: RegisterProps) {
-  console.log("Signing up...");
-  console.log(name);
-  console.log(email);
-  console.log(password);
-  console.log(confirmPassword);
-  console.log(`Remember me: ${remember}`);
-
-  router.push("/(tabs)")
-}
 
 function googleRegister() {
   console.log("Google sign up");
@@ -59,6 +40,9 @@ const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { login: authLogin } = useAuth();
 
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? 'light'];
@@ -70,6 +54,32 @@ const RegisterPage = () => {
   const [isRemembered, setIsRemembered] = useState(false);
   const toggleSwitch = () => {
       setIsRemembered(!isRemembered);
+  };
+
+  // Handle register with backend (same as login - Milkshake auto-creates account)
+  const handleRegister = async () => {
+    if (!email || !password) {
+      Alert.alert("Error", "Please enter email and password");
+      return;
+    }
+
+    if (password !== passwordConfirm) {
+      Alert.alert("Error", "Passwords do not match");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      // Use same login API - server will create account if first time
+      await authLogin(email, password);
+      router.push("/(tabs)");
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || error.message || "Sign up failed. Please try again.";
+      Alert.alert("Sign Up Failed", errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Data to dynamically create form fieldbox elements
@@ -152,15 +162,14 @@ const RegisterPage = () => {
       {/* Button Section */}
       <View style={styles.sectionBtn}>
         {/* Login button */}
-        <Pressable style={styles.loginBtn} onPress={() => {register({
-          name: name, 
-          email: email, 
-          password: password, 
-          confirmPassword: passwordConfirm, 
-          remember: isRemembered
-        })}}
+        <Pressable
+          style={styles.loginBtn}
+          onPress={handleRegister}
+          disabled={isLoading}
         >
-            <Text style={styles.loginBtnText}>Sign in</Text>
+            <Text style={styles.loginBtnText}>
+              {isLoading ? 'Signing up...' : 'Sign in'}
+            </Text>
         </Pressable>
         
         {/* Divider element */}
