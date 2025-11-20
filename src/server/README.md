@@ -25,19 +25,6 @@ JWT-based authentication server (Email/Password + Google OAuth support)
    mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority
    ```
 
-### 2. Google OAuth Setup (Optional)
-
-1. Go to https://console.cloud.google.com/
-2. Create a new project
-3. Navigate to "APIs & Services" → "Credentials"
-4. Click "Create Credentials" → "OAuth 2.0 Client ID"
-5. Application type: "Web application"
-6. Add Authorized redirect URIs:
-   ```
-   http://localhost:3000/api/auth/google/callback
-   ```
-7. Copy the Client ID and Client Secret
-
 ## 🛠️ Installation and Setup
 
 ### Method 1: Docker (Recommended)
@@ -130,19 +117,13 @@ NODE_ENV=development
 # MongoDB Atlas (connection string copied from above)
 MONGODB_USERNAME=your-mongodb-username
 MONGODB_PASSWORD=your-mongodb-password
-MONGODB_URI=mongodb+srv://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@pocket-ai-db.labcmhf.mongodb.net/?appName=pocket-ai-db
+MONGODB_URI=mongodb+srv://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@pocket-ai-db.labcmhf.mongodb.net/?retryWrites=true&w=majority&appName=pocket-ai-db
 
 # JWT Configuration
-JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
+JWT_SECRET=Ask to Peter
 JWT_EXPIRE=7d
 JWT_ISSUER=pocket-ai-server
 JWT_AUDIENCE=pocket-ai-app
-
-# Google OAuth (configure later)
-# I am going to add this feature later
-GOOGLE_CLIENT_ID=your-google-client-id
-GOOGLE_CLIENT_SECRET=your-google-client-secret
-GOOGLE_CALLBACK_URL=http://localhost:3000/api/auth/google/callback
 
 # Frontend URL (CORS)
 FRONTEND_URL=http://localhost:19000
@@ -162,9 +143,9 @@ npm start
 
 When the server runs successfully:
 ```
-🚀 Server is running on port 3000
-📝 Environment: development
-✅ MongoDB Connected: cluster0.xxxxx.mongodb.net
+Server is running on port 3000
+Environment: development
+MongoDB Connected: cluster0.xxxxx.mongodb.net
 ```
 
 ### 4. Health Check
@@ -243,13 +224,6 @@ Content-Type: application/json
   }
 }
 ```
-
-#### 3. Google Login
-```http
-GET /api/auth/google
-```
-
-When accessed from a browser, it redirects to the Google login page.
 
 ### Protected Endpoints (JWT Token Required)
 
@@ -362,89 +336,7 @@ src/server/
 └── .env                   # Environment variables (not in git)
 ```
 
-## 🏫 Deploy to SSH Server
-
-### 1. Connect to SSH Server
-```bash
-ssh username@server-address
-```
-
-### 2. Check Node.js Version
-```bash
-node -v
-npm -v
-```
-
-If Node.js is not installed, install with nvm:
-```bash
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-nvm install --lts
-```
-
-### 3. Copy Project
-```bash
-# Clone with git
-git clone <repository-url>
-cd pocket-ai/src/server
-
-# Or transfer files with scp
-scp -r src/server username@server:/path/to/destination
-```
-
-### 4. Configure Environment Variables
-```bash
-nano .env
-# Enter production settings and save
-```
-
-### 5. Run in Background with PM2
-```bash
-npm install -g pm2
-pm2 start src/index.js --name pocket-ai-server
-pm2 save
-pm2 startup
-```
-
-### 6. Check Port and Firewall
-```bash
-# Check if port is open
-netstat -tuln | grep 3000
-
-# Configure firewall if needed (requires admin privileges)
-sudo ufw allow 3000
-```
-
-## 📁 Project Structure
-
-```
-src/server/
-├── src/
-│   ├── config/
-│   │   ├── db.js              # MongoDB connection
-│   │   ├── jwt.js             # JWT configuration
-│   │   └── passport.js        # Google OAuth configuration
-│   ├── controllers/
-│   │   └── authController.js  # Authentication logic
-│   ├── middleware/
-│   │   ├── authMiddleware.js  # JWT verification
-│   │   └── validation.js      # Input validation
-│   ├── models/
-│   │   └── User.js            # User schema
-│   ├── routes/
-│   │   └── authRoutes.js      # API routes
-│   ├── utils/
-│   │   └── validators.js      # Utility functions
-│   └── index.js               # Server entry point
-├── .env.example               # Environment variables example
-├── .gitignore
-├── package.json
-├── Dockerfile                 # Production Docker image
-├── Dockerfile.dev            # Development Docker image
-├── docker-compose.yml        # Docker Compose configuration
-└── README.md
-```
-
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### MongoDB Connection Failed
 ```
@@ -482,12 +374,3 @@ docker compose up --build -d
 # Check if .env file exists
 ls -la .env
 ```
-
-## 📝 Next Steps
-
-- [ ] Create MongoDB Atlas account and configure cluster
-- [ ] Configure `.env` file
-- [ ] Test server locally or with Docker
-- [ ] Create Google OAuth client ID
-- [ ] Integrate with frontend
-- [ ] Deploy to SSH server

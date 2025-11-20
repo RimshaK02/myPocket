@@ -3,11 +3,11 @@ const FormData = require('form-data');
 
 /**
  * Milkshake API Client
- * Base URL: https://api.mshake.app/
+ * Base URL: https://api.dev.mshake.app/
  */
 class MilkshakeClient {
   constructor() {
-    this.baseURL = 'https://api.mshake.app';
+    this.baseURL = 'https://api.dev.mshake.app';
     this.token = null;
     this.cookie = null;
   }

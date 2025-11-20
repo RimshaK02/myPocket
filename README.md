@@ -1,6 +1,21 @@
 # Pocket AI
 (Description WIP)
 
+## Quick Start (Unified - UI + Server)
+
+Start both the UI and server with Docker Compose:
+
+```bash
+docker compose -f docker-compose.unified.yml up -d
+```
+
+- UI: http://localhost:8081 (scan QR code with Expo Go)
+- Server: http://localhost:3000
+
+Stop everything:
+```bash
+docker compose -f docker-compose.unified.yml down
+```
 
 ## Start Your Local UI Development Environment
 

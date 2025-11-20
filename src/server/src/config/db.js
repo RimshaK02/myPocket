@@ -18,9 +18,9 @@ const connectDB = async () => {
       // useUnifiedTopology: true,
     });
 
-    console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
-    console.error(`❌ MongoDB Connection Error: ${error.message}`);
+    console.error(`MongoDB Connection Error: ${error.message}`);
     // In development, keep server running even if DB connection fails
     if (process.env.NODE_ENV === 'production') {
       process.exit(1);
