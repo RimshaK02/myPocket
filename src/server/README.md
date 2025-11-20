@@ -22,7 +22,7 @@ JWT-based authentication server (Email/Password + Google OAuth support)
 5. Click "Connect" → "Connect your application"
 6. Copy the connection string:
    ```
-   mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority
+   mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority&appName=pocket-ai-db
    ```
 
 ## 🛠️ Installation and Setup
