@@ -11,7 +11,7 @@ export default function Divider({ text, icon }: DividerProps) {
   const colors = Colors[colorScheme ?? 'light'];
   return (
     <View>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
         {icon}
         <Text style={{ color: colors.darkGray, textAlign: 'left' }}>{text}</Text>
       </View>

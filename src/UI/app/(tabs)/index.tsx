@@ -1,6 +1,16 @@
 import React, { useMemo } from 'react';
 import { useState } from 'react';
-import { FlatList, StyleSheet, Text, ScrollView, StatusBar, View } from 'react-native';
+import {
+  Button,
+  FlatList,
+  StyleSheet,
+  Text,
+  ScrollView,
+  StatusBar,
+  View,
+  Pressable,
+  TextInput,
+} from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { LogProps } from '@/components/LogCard';
 import Divider from '@/components/Divider';
@@ -9,8 +19,15 @@ import ApprovedIcon from '@/assets/images/approved.svg';
 import PendingIcon from '@/assets/images/pending.svg';
 import InfoIcon from '@/assets/images/info.svg';
 import { LogStatus } from '@/components/LogCard';
+import LogTypeFilter from '@/components/LogTypeFilter';
+import { LogType } from '@/components/LogCard';
+import FilterIcon from '@/assets/images/filter.svg';
+
+const ALL_LOG_TYPES: LogType[] = ['task', 'notes', 'animal', 'animalEvent'];
 
 export default function LogsScreen() {
+  const [selectedTypes, setSelectedTypes] = useState<Set<LogType>>(new Set(ALL_LOG_TYPES));
+
   const [dummyData, setDummyData] = useState<LogProps[]>([
     {
       id: '1',
@@ -77,33 +94,92 @@ export default function LogsScreen() {
       status: 'pending',
     },
   ]);
-  const pendingLogs = useMemo(() => dummyData.filter((i) => i.status === 'pending'), [dummyData]);
-  const approvedLogs = useMemo(() => dummyData.filter((i) => i.status === 'approved'), [dummyData]);
+  const filteredData = useMemo(
+    () => dummyData.filter((item) => selectedTypes.has(item.type)),
+    [dummyData, selectedTypes],
+  );
+  const pendingLogs = useMemo(
+    () => filteredData.filter((i) => i.status === 'pending'),
+    [filteredData],
+  );
+  const approvedLogs = useMemo(
+    () => filteredData.filter((i) => i.status === 'approved'),
+    [filteredData],
+  );
+
+  const handleTypePress = (item: LogType) => {
+    const newSet = new Set(selectedTypes);
+    if (newSet.has(item)) {
+      newSet.delete(item);
+    } else {
+      newSet.add(item);
+    }
+    setSelectedTypes(newSet);
+  };
+
+  const handleApproveAll = () => {
+    setDummyData((prev) => {
+      return prev.map((log) => (log.status === 'pending' ? { ...log, status: 'approved' } : log));
+    });
+  };
+
   return (
-    <View style={styles.container}>
-      {/* // <SafeAreaProvider>
-    //   <SafeAreaView style={styles.container}> */}
-      <ScrollView>
-        {pendingLogs.length > 0 ? (
-          <>
-            <Divider text="Pending Approvals" icon={<PendingIcon height={12} />} />
-            {pendingLogs.map((item) => (
-              <LogCard key={item.id} {...item} />
-            ))}
-          </>
-        ) : null}
-        {approvedLogs.length > 0 ? (
-          <>
-            <Divider text="Approved Entries" icon={<ApprovedIcon height={12} />} />
-            {approvedLogs.map((item) => (
-              <LogCard key={item.id} {...item} />
-            ))}
-          </>
-        ) : null}
-      </ScrollView>
-      {/* </SafeAreaView> */}
-      {/* </SafeAreaProvider> */}
-    </View>
+    // <View style={styles.container}>
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
+        <View>
+          <View style={{ flexDirection: 'row', gap: 10, marginBottom: 10, height: 45 }}>
+            <TextInput
+              style={{ flex: 1, borderWidth: 3, borderColor: '#ABB7C2', borderRadius: 8 }}
+            />
+            <Pressable
+              style={{
+                width: 45,
+                borderRadius: 8,
+                backgroundColor: '#6C8F9D',
+                justifyContent: 'center',
+              }}
+            >
+              <FilterIcon width={24} height={24} color={'white'} style={{ alignSelf: 'center' }} />
+            </Pressable>
+          </View>
+          <FlatList
+            horizontal
+            contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', flexGrow: 1 }}
+            data={ALL_LOG_TYPES}
+            keyExtractor={(item) => item}
+            renderItem={({ item }) => (
+              <LogTypeFilter
+                type={item}
+                selected={selectedTypes.has(item)}
+                onPress={() => handleTypePress(item)}
+              />
+            )}
+          />
+        </View>
+        <ScrollView>
+          {pendingLogs.length > 0 ? (
+            <>
+              <Divider text="Pending Approvals" icon={<PendingIcon height={12} />} />
+              <Pressable style={styles.approveAllButton} onPress={handleApproveAll}>
+                <Text style={styles.approveAllButtonText}>Approve All Pending Tasks</Text>
+              </Pressable>
+              {pendingLogs.map((item) => (
+                <LogCard key={item.id} {...item} />
+              ))}
+            </>
+          ) : null}
+          {approvedLogs.length > 0 ? (
+            <>
+              <Divider text="Approved Entries" icon={<ApprovedIcon height={12} />} />
+              {approvedLogs.map((item) => (
+                <LogCard key={item.id} {...item} />
+              ))}
+            </>
+          ) : null}
+        </ScrollView>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 
@@ -117,5 +193,17 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 42,
     padding: 12,
+  },
+  approveAllButtonText: {
+    textAlign: 'center',
+    marginVertical: 10,
+    color: '#92A684',
+    fontWeight: 'bold',
+  },
+  approveAllButton: {
+    borderWidth: 3,
+    borderColor: '#92A684',
+    marginTop: 10,
+    borderRadius: 8,
   },
 });

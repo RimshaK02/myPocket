@@ -8,24 +8,29 @@ export type LogStatus = 'approved' | 'pending' | 'error';
 type LogConfig = {
   iconName: keyof typeof MaterialCommunityIcons.glyphMap; //Used Material Icons for fast development, can be replaced with a filepath in future for consistency
   color: string;
+  text: string;
 };
 
 export const LOG_CONFIG: Record<LogType, LogConfig> = {
   task: {
     iconName: 'clipboard-list-outline',
     color: '#5C7680',
+    text: 'Task',
   },
   notes: {
     iconName: 'note-edit-outline',
     color: '#7A866D',
+    text: 'Notes',
   },
   animalEvent: {
     iconName: 'paw',
     color: '#D5A663',
+    text: 'Animal Event',
   },
   animal: {
     iconName: 'cow',
     color: '#AB83E3',
+    text: 'Animal',
   },
 };
 export interface LogProps {
