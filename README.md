@@ -3,28 +3,33 @@
 
 ## Quick Start (Unified - UI + Server)
 
-**Prerequisites:**
-1. Copy and configure environment variables:
+**1. Setup environment:**
 ```bash
 cp .env.example .env
 ```
 
-2. Find your local IP address:
+**2. Find your IP address:**
    - **Mac**: `ifconfig | grep "inet " | grep -v 127.0.0.1`
    - **Windows**: `ipconfig` (look for IPv4 Address)
    - **Linux**: `hostname -I | awk '{print $1}'`
 
-3. Edit `.env` and replace `YOUR_IP_HERE` with your IP address
-
-**Start everything:**
-```bash
-docker compose -f docker-compose.unified.yml up -d
+**3. Edit `.env`** and replace `YOUR_IP_HERE` with your IP:
+```env
+EXPO_HOST=192.168.1.100
+EXPO_PUBLIC_HOST=192.168.1.100
 ```
 
-- UI: http://localhost:8081 (scan QR code with Expo Go)
-- Server: http://localhost:3000
+**4. Start everything:**
+```bash
+docker compose -f docker-compose.unified.yml up --build -d
+```
 
-**Stop everything:**
+**Access:**
+- 📱 Mobile: Scan QR code with Expo Go app
+- 🌐 Web: http://localhost:8081
+- 🔧 Server API: http://localhost:3000
+
+**Stop:**
 ```bash
 docker compose -f docker-compose.unified.yml down
 ```
