@@ -6,9 +6,9 @@ import { HapticTab } from '@/components/haptic-tab';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import MicIcon from '@/assets/images/mic.svg';
-import ProfileIcon from "@/assets/images/profile.svg";
-import LogsIcon from "@/assets/images/logs.svg";
-
+import ProfileIcon from '@/assets/images/profile.svg';
+import LogsIcon from '@/assets/images/logs.svg';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 export const TASKBAR_HEIGHT = 93;
 
@@ -24,9 +24,9 @@ export default function TabLayout() {
         tabBarStyle: {
           backgroundColor: Colors[colorScheme ?? 'light'].tabBar,
           minHeight: TASKBAR_HEIGHT,
-          height: "auto",
+          height: 'auto',
           paddingTop: 8,
-          paddingHorizontal: 10
+          paddingHorizontal: 10,
         },
       }}
     >
@@ -63,9 +63,7 @@ export default function TabLayout() {
         options={{
           title: 'Profile',
           tabBarLabelStyle: styles.tabLabel,
-          tabBarIcon: ({ color }) => (
-            <ProfileIcon color={color} />
-          ),
+          tabBarIcon: ({ color }) => <ProfileIcon color={color} />,
         }}
       />
     </Tabs>
@@ -77,7 +75,7 @@ const styles = StyleSheet.create({
     borderColor: '#fff',
     borderWidth: 2,
     position: 'absolute',
-    bottom: (Platform.OS === 'ios' ? 20 : 30 ),
+    bottom: Platform.OS === 'ios' ? 20 : 30,
     alignSelf: 'center',
     width: 80,
     height: 80,
@@ -99,13 +97,13 @@ const styles = StyleSheet.create({
   fabLabel: {
     // fontSize: 12,
     color: '#fff',
-    marginTop: (Platform.OS === 'ios' ? 33 : 25 ),
+    marginTop: Platform.OS === 'ios' ? 33 : 25,
   },
   tabLabel: {
     fontSize: 15,
     // fontFamily: "Poppins",
     fontWeight: 500,
     letterSpacing: -0.4,
-    textAlign: "center"    
-  }
+    textAlign: 'center',
+  },
 });
