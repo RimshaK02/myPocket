@@ -39,7 +39,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const user = await authService.milkshakeLogin({ email, password });
       setUser(user);
     } catch (error) {
-      // Silently throw error - UI will handle displaying the error to user
       throw error;
     }
   };
