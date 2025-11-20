@@ -2,7 +2,7 @@
 
 // React/React Native imports
 import { Text, View, StyleProp, ViewStyle,  Pressable, StyleSheet } from 'react-native';
-import React, { ReactNode, ReactElement, useRef } from 'react';
+import React, { PropsWithChildren, ReactNode, ReactElement, useRef } from 'react';
 import { SvgProps } from "react-native-svg";
 
 // React navigation/expo router stuff
@@ -19,7 +19,7 @@ interface CardWrapperProps {
 };
 
 // Required to nest NestedNavBtn inside a Stack.Navigator tag somewhere
-const CardWrapper = ({children, style, header}: React.PropsWithChildren<CardWrapperProps>) => {
+const CardWrapper = ({children, style, header}: PropsWithChildren<CardWrapperProps>) => {
 
     const contentList: Array<React.ReactNode> = [];
     const listLen: number = React.Children.count(children);
@@ -29,7 +29,6 @@ const CardWrapper = ({children, style, header}: React.PropsWithChildren<CardWrap
     //   - Customize border radius styling based on child position/index, using childPos
     React.Children.forEach(children, (child, index) => {
         // Mainly type checking stuff (...ironically raising type-checking errors);
-        // if 
         if (React.isValidElement(child)) {
             const childPos = (listLen - 1 === 0) ? "single" : (
                 (index === 0) ? "top" : (
@@ -97,7 +96,8 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         borderWidth: 1.5,
         borderColor: CLR_SECONDARY,
-        backgroundColor: "#FFFFFF"
+        backgroundColor: "#FFFFFF",
+        boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.30)"
     },
     divider: {
         width: "auto",
