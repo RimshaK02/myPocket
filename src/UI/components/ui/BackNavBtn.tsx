@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 // Local imports
 import { CLR_DARK, CLR_LIGHT } from "@/assets/styles/global";
 import NavArrow from "@/assets/images/nav-arrow.svg";
+import WhiteNavArrow from "@/assets/images/nav-arrow-white.svg";
 
 interface BackNavBtnProps {
     style?: StyleProp<ViewStyle>,  // Optional extra styling components, if necessary
@@ -51,7 +52,13 @@ const BackNavBtn = ({style, isDark=false}: BackNavBtnProps) => {
         >   
             {/* Nav arrow icon */}
             <View style={styles.arrowWrapper}>
-                <NavArrow width="100%" height="100%" transform={[{rotateY: "180deg"}]} fill={isDark ? CLR_LIGHT : CLR_DARK} />
+                {isDark ? (
+                    <WhiteNavArrow width="100%" height="100%" transform={[{rotateY: "180deg"}]} />
+                ) : (
+                    <NavArrow width="100%" height="100%" transform={[{rotateY: "180deg"}]} />
+                )
+                }
+                
             </View>
         </Pressable>
     )
@@ -72,6 +79,7 @@ const styles = StyleSheet.create({
         height: "80%",
         justifyContent: "center",
         alignContent: "center",
+        alignItems: "center"
     },
     darkBtn: {
         backgroundColor: "rgba(0, 0, 0, 0.18)"
