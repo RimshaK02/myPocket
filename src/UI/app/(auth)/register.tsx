@@ -110,10 +110,10 @@ const RegisterPage = () => {
       {/* Text headers */}
       <View style={styles.headerWrapper}>
         <Text style={styles.header}>
-          Welcome back!
+          Let’s get started
         </Text>
         <Text style={styles.subheader}>
-          Please sign in to continue to your account.
+          Please create an account to continue.
         </Text>
       </View>
 
@@ -200,7 +200,7 @@ const RegisterPage = () => {
             return;
           }}
         >
-          Sign in to your account
+          Create an Account
         </Text>
       </View>
     </AuthContainer>
