@@ -120,10 +120,10 @@ const RegisterPage = () => {
       {/* Text headers */}
       <View style={styles.headerWrapper}>
         <Text style={styles.header}>
-          Welcome back!
+          Let’s get started
         </Text>
         <Text style={styles.subheader}>
-          Please sign in to continue to your account.
+          Please create an account to continue.
         </Text>
       </View>
 
@@ -167,9 +167,7 @@ const RegisterPage = () => {
           onPress={handleRegister}
           disabled={isLoading}
         >
-            <Text style={styles.loginBtnText}>
-              {isLoading ? 'Signing up...' : 'Sign in'}
-            </Text>
+            <Text style={styles.loginBtnText}>Create an Account</Text>
         </Pressable>
         
         {/* Divider element */}
