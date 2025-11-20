@@ -47,6 +47,10 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignContent: "center",
     },
+    // switch: {
+    //     position: "absolute",   
+    //     right: "5%",
+    // },
     img: {
         justifyContent: "center",
         alignContent: "center"
@@ -114,10 +118,10 @@ const SwitchCard = ({cardStyle, titleStyle, subtitleStyle, title, subtitle, icon
                     style={GlobalStyles.switchCard}
                     trackColor={{
                         false: "#9A9A9A",
-                        true: "#0088bdff"
-                    }}
+                        true: "#6C8F9D"
+                    }}            
                     thumbColor={CLR_LIGHT}
-                    ios_backgroundColor="rgba(132, 132, 132, 1)"
+                    ios_backgroundColor="#EAEAEA"
                     onValueChange={toggleSwitch}
                     value={isEnabled}
                 />
