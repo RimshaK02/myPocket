@@ -1,0 +1,56 @@
+services:
+  # Backend server
+  server:
+    build:
+      context: ./src/server
+      dockerfile: Dockerfile.dev
+    container_name: pocket-ai-server
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+    env_file:
+      - ./src/server/.env
+    volumes:
+      - ./src/server/src:/app/src
+      - ./src/server/package.json:/app/package.json
+      - /app/node_modules
+    restart: unless-stopped
+    networks:
+      - pocket-ai-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Frontend UI
+  ui:
+    build:
+      context: ./src/UI
+      dockerfile: Dockerfile
+    container_name: pocket-ai-ui
+    ports:
+      - "${EXPO_PORT:-19000}:19000"  # Expo dev server
+      - "19001:19001"                 # Expo dev tools
+      - "19002:19002"                 # Metro bundler
+      - "8081:8081"                   # Metro bundler (web)
+    environment:
+      - EXPO_DEVTOOLS_LISTEN_ADDRESS=0.0.0.0
+      - REACT_NATIVE_PACKAGER_HOSTNAME=${EXPO_HOST}
+      - EXPO_PUBLIC_HOST=${EXPO_HOST}
+    volumes:
+      - ./src/UI:/app
+      - /app/node_modules
+    stdin_open: true
+    tty: true
+    networks:
+      - pocket-ai-network
+    depends_on:
+      server:
+        condition: service_healthy
+
+networks:
+  pocket-ai-network:
+    driver: bridge

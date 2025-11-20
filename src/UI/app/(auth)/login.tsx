@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Image, Pressable, Dimensions, FlatList, Switch, Platform } from "react-native";
+import { StyleSheet, View, Text, Image, Pressable, Dimensions, FlatList, Switch, Platform, Alert } from "react-native";
 import { ReactNode, useState } from "react";
 import { router, useNavigation } from "expo-router";
 import Constants from "expo-constants";
@@ -10,6 +10,7 @@ import GlobalStyles, { CLR_LIGHT, CLR_SECONDARY } from "@/assets/styles/global";
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import FormField from "@/components/ui/auth/FormField";
+import { useAuth } from '@/contexts/AuthContext';
 
 // Local image imports
 import GoogleIcon from '@/assets/images/google-logo.svg';
@@ -19,22 +20,6 @@ import OutlookIcon from '@/assets/images/outlook-logo.svg';
 // Local constants
 const BODY_OVERLAP = 30;
 const BANNER_HEIGHT = 68 + 16 + 16 + Constants.statusBarHeight;
-
-// Initiate and handle login API calls to backend
-interface LoginProps {
-  email: string,
-  password: string,
-  remember: boolean
-}
-
-function login({email, password, remember}: LoginProps) {
-  console.log("Logging in...");
-  console.log(email);
-  console.log(password);
-  console.log(`Remember me: ${remember}`);
-
-  router.push("/(tabs)")
-}
 
 function googleLogin() {
   console.log("Google login");
@@ -55,9 +40,32 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isRemembered, setIsRemembered] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { login: authLogin } = useAuth();
 
   const toggleSwitch = () => {
       setIsRemembered(!isRemembered);
+  };
+
+  // Handle login with backend
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert("Error", "Please enter email and password");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      await authLogin(email, password);
+      router.push("/(tabs)");
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || error.message || "Login failed. Please try again.";
+      Alert.alert("Login Failed", errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Expo router/react navigation path routing
@@ -130,8 +138,14 @@ const LoginPage = () => {
       {/* Button Section */}
       <View style={styles.sectionBtn}>
         {/* Main Login Button */}
-        <Pressable style={styles.loginBtn} onPress={() => {login({email: email, password: password, remember: isRemembered})}}>
-            <Text style={styles.loginBtnText}>Sign in</Text>
+        <Pressable
+          style={styles.loginBtn}
+          onPress={handleLogin}
+          disabled={isLoading}
+        >
+            <Text style={styles.loginBtnText}>
+              {isLoading ? 'Signing in...' : 'Sign in'}
+            </Text>
         </Pressable>
         
         {/* Divider Element */}

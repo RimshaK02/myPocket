@@ -1,6 +1,38 @@
 # Pocket AI
 (Description WIP)
 
+## Quick Start (Unified - UI + Server)
+
+**1. Setup environment:**
+```bash
+cp .env.example .env
+```
+
+**2. Find your IP address:**
+   - **Mac**: `ifconfig | grep "inet " | grep -v 127.0.0.1`
+   - **Windows**: `ipconfig` (look for IPv4 Address)
+   - **Linux**: `hostname -I | awk '{print $1}'`
+
+**3. Edit `.env`** and replace `YOUR_IP_HERE` with your IP:
+```env
+EXPO_HOST=192.168.1.100
+EXPO_PUBLIC_HOST=192.168.1.100
+```
+
+**4. Start everything:**
+```bash
+docker compose -f docker-compose.unified.yml up --build -d
+```
+
+**Access:**
+- 📱 Mobile: Scan QR code with Expo Go app
+- 🌐 Web: http://localhost:8081
+- 🔧 Server API: http://localhost:3000
+
+**Stop:**
+```bash
+docker compose -f docker-compose.unified.yml down
+```
 
 ## Start Your Local UI Development Environment
 

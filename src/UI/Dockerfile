@@ -11,13 +11,13 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy package.json and package-lock.json
-COPY src/UI/package*.json ./
+COPY package*.json ./
 
 # Install dependencies
 RUN npm ci
 
 # Copy source code
-COPY src/UI/ ./
+COPY . ./
 
 # Expose Expo ports
 # 19000: Expo Dev Server
