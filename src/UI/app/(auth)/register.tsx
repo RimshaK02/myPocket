@@ -160,7 +160,7 @@ const RegisterPage = () => {
           remember: isRemembered
         })}}
         >
-            <Text style={styles.loginBtnText}>Sign in</Text>
+            <Text style={styles.loginBtnText}>Create an Account</Text>
         </Pressable>
         
         {/* Divider element */}
@@ -200,7 +200,7 @@ const RegisterPage = () => {
             return;
           }}
         >
-          Create an Account
+          Sign in to your account
         </Text>
       </View>
     </AuthContainer>
