@@ -1,8 +1,12 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// API base URL - change this to deployed URL when ready
-const API_BASE_URL = 'http://192.168.2.19:3000/api';
+// API base URL - must be configured via environment variable
+if (!process.env.EXPO_PUBLIC_API_URL) {
+  throw new Error('EXPO_PUBLIC_API_URL is not configured. Please set it in your .env file.');
+}
+
+const API_BASE_URL = `${process.env.EXPO_PUBLIC_API_URL}/api`;
 
 const api = axios.create({
   baseURL: API_BASE_URL,

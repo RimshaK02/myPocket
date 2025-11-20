@@ -3,8 +3,20 @@
 
 ## Quick Start (Unified - UI + Server)
 
-Start both the UI and server with Docker Compose:
+**Prerequisites:**
+1. Copy and configure environment variables:
+```bash
+cp .env.example .env
+```
 
+2. Find your local IP address:
+   - **Mac**: `ifconfig | grep "inet " | grep -v 127.0.0.1`
+   - **Windows**: `ipconfig` (look for IPv4 Address)
+   - **Linux**: `hostname -I | awk '{print $1}'`
+
+3. Edit `.env` and replace `YOUR_IP_HERE` with your IP address
+
+**Start everything:**
 ```bash
 docker compose -f docker-compose.unified.yml up -d
 ```
@@ -12,7 +24,7 @@ docker compose -f docker-compose.unified.yml up -d
 - UI: http://localhost:8081 (scan QR code with Expo Go)
 - Server: http://localhost:3000
 
-Stop everything:
+**Stop everything:**
 ```bash
 docker compose -f docker-compose.unified.yml down
 ```
