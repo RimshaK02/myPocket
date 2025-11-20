@@ -27,7 +27,7 @@ const ALL_LOG_TYPES: LogType[] = ['task', 'notes', 'animal', 'animalEvent'];
 
 export default function LogsScreen() {
   const [selectedTypes, setSelectedTypes] = useState<Set<LogType>>(new Set(ALL_LOG_TYPES));
-
+  const [searchText, setSearchText] = useState('');
   const [dummyData, setDummyData] = useState<LogProps[]>([
     {
       id: '1',
@@ -94,10 +94,19 @@ export default function LogsScreen() {
       status: 'pending',
     },
   ]);
-  const filteredData = useMemo(
-    () => dummyData.filter((item) => selectedTypes.has(item.type)),
-    [dummyData, selectedTypes],
-  );
+  const filteredData = useMemo(() => {
+    // Filter by type
+    let result = dummyData.filter((item) => selectedTypes.has(item.type));
+
+    // Filter by search text if not empty
+    if (searchText.trim() !== '') {
+      const searchLower = searchText.toLowerCase();
+      result = result.filter((item) => item.transcription.toLowerCase().includes(searchLower));
+    }
+
+    return result;
+  }, [dummyData, selectedTypes, searchText]);
+
   const pendingLogs = useMemo(
     () => filteredData.filter((i) => i.status === 'pending'),
     [filteredData],
@@ -107,7 +116,7 @@ export default function LogsScreen() {
     [filteredData],
   );
 
-  const handleTypePress = (item: LogType) => {
+  const handleTypeFilter = (item: LogType) => {
     const newSet = new Set(selectedTypes);
     if (newSet.has(item)) {
       newSet.delete(item);
@@ -124,22 +133,18 @@ export default function LogsScreen() {
   };
 
   return (
-    // <View style={styles.container}>
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
         <View>
+          <Text style={styles.text}>Logged Recordings</Text>
           <View style={{ flexDirection: 'row', gap: 10, marginBottom: 10, height: 45 }}>
             <TextInput
-              style={{ flex: 1, borderWidth: 3, borderColor: '#ABB7C2', borderRadius: 8 }}
+              placeholder="🔍Search..."
+              style={styles.textInput}
+              value={searchText}
+              onChangeText={(newText) => setSearchText(newText)}
             />
-            <Pressable
-              style={{
-                width: 45,
-                borderRadius: 8,
-                backgroundColor: '#6C8F9D',
-                justifyContent: 'center',
-              }}
-            >
+            <Pressable style={styles.searchButton}>
               <FilterIcon width={24} height={24} color={'white'} style={{ alignSelf: 'center' }} />
             </Pressable>
           </View>
@@ -152,7 +157,7 @@ export default function LogsScreen() {
               <LogTypeFilter
                 type={item}
                 selected={selectedTypes.has(item)}
-                onPress={() => handleTypePress(item)}
+                onPress={() => handleTypeFilter(item)}
               />
             )}
           />
@@ -191,8 +196,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
   },
   text: {
-    fontSize: 42,
+    fontSize: 25,
     padding: 12,
+    fontWeight: '600',
   },
   approveAllButtonText: {
     textAlign: 'center',
@@ -205,5 +211,18 @@ const styles = StyleSheet.create({
     borderColor: '#92A684',
     marginTop: 10,
     borderRadius: 8,
+  },
+  textInput: {
+    flex: 1,
+    borderWidth: 3,
+    borderColor: '#ABB7C2',
+    borderRadius: 8,
+    paddingLeft: 10,
+  },
+  searchButton: {
+    width: 45,
+    borderRadius: 8,
+    backgroundColor: '#6C8F9D',
+    justifyContent: 'center',
   },
 });
