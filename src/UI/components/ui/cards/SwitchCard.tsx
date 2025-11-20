@@ -121,7 +121,7 @@ const SwitchCard = ({cardStyle, titleStyle, subtitleStyle, title, subtitle, icon
                         true: "#6C8F9D"
                     }}            
                     thumbColor={CLR_LIGHT}
-                    ios_backgroundColor="#EAEAEA"
+                    ios_backgroundColor="#dedede"
                     onValueChange={toggleSwitch}
                     value={isEnabled}
                 />
