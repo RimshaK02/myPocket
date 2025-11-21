@@ -20,6 +20,7 @@ export const Colors = {
     tabBar: '#465262',
     primaryButton: '#92A684',
     secondaryButton: '#6C8F9D',
+    darkGray: '#3D3D3D',
   },
   dark: {
     text: '#11181C',
@@ -31,6 +32,7 @@ export const Colors = {
     tabBar: '#465262',
     primaryButton: '#92A684',
     secondaryButton: '#6C8F9D',
+    darkGray: '#3D3D3D',
   },
 };
 
