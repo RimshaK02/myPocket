@@ -1,6 +1,6 @@
 import NestedNavCard from './ui/cards/NestedNavCard';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { View } from 'react-native';
+import { View, StyleProp, ViewStyle } from 'react-native';
 
 export type LogType = 'task' | 'notes' | 'animalEvent' | 'animal';
 export type LogStatus = 'approved' | 'pending' | 'error';
@@ -34,6 +34,7 @@ export const LOG_CONFIG: Record<LogType, LogConfig> = {
   },
 };
 export interface LogProps {
+  style?: StyleProp<ViewStyle>,  
   id: string;
   type: LogType;
   title: string;
@@ -43,12 +44,12 @@ export interface LogProps {
   status: LogStatus;
 }
 
-export default function LogCard({ id, type, title, date, time, transcription }: LogProps) {
+export default function LogCard({ style, id, type, title, date, time, transcription }: LogProps) {
   const color = LOG_CONFIG[type].color;
   const iconName = LOG_CONFIG[type].iconName;
   const icon = <MaterialCommunityIcons name={iconName} size={30} color={color} />;
   return (
-    <View style={{ borderColor: color, borderWidth: 2, borderRadius: 10, marginTop: 15 }}>
+    <View style={[{ borderColor: color, borderWidth: 2, borderRadius: 10, marginTop: 15 }, style]}>
       <NestedNavCard
         submenuRef="submenu"
         title={title}

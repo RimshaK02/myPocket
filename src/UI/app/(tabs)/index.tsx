@@ -22,6 +22,7 @@ import { LogStatus } from '@/components/LogCard';
 import LogTypeFilter from '@/components/LogTypeFilter';
 import { LogType } from '@/components/LogCard';
 import FilterIcon from '@/assets/images/filter.svg';
+import { Colors } from '@/constants/theme';
 
 const ALL_LOG_TYPES: LogType[] = ['task', 'notes', 'animal', 'animalEvent'];
 
@@ -134,12 +135,14 @@ export default function LogsScreen() {
 
   return (
     <SafeAreaProvider>
+      <StatusBar barStyle='dark-content'/>
       <SafeAreaView style={styles.container}>
-        <View>
+        <View style={{paddingBottom: 30, paddingTop: 25}}>
           <Text style={styles.text}>Logged Recordings</Text>
-          <View style={{ flexDirection: 'row', gap: 10, marginBottom: 10, height: 45 }}>
+          <View style={{ flexDirection: 'row', gap: 10, marginBottom: 10, height: 45, marginTop: 10 }}>
             <TextInput
-              placeholder="🔍Search..."
+              placeholder="🔍  Search..."
+              placeholderTextColor="#ABB7C2"
               style={styles.textInput}
               value={searchText}
               onChangeText={(newText) => setSearchText(newText)}
@@ -169,16 +172,16 @@ export default function LogsScreen() {
               <Pressable style={styles.approveAllButton} onPress={handleApproveAll}>
                 <Text style={styles.approveAllButtonText}>Approve All Pending Tasks</Text>
               </Pressable>
-              {pendingLogs.map((item) => (
-                <LogCard key={item.id} {...item} />
+              {pendingLogs.map((item, index) => (
+                <LogCard key={item.id} style={(index >= pendingLogs.length - 1) ? styles.lastCardPending : {}} {...item} />
               ))}
             </>
           ) : null}
           {approvedLogs.length > 0 ? (
             <>
               <Divider text="Approved Entries" icon={<ApprovedIcon height={12} />} />
-              {approvedLogs.map((item) => (
-                <LogCard key={item.id} {...item} />
+              {approvedLogs.map((item, index) => (
+                <LogCard key={item.id} style={(index >= approvedLogs.length - 1) ? styles.lastCardApproved : {}} {...item} />
               ))}
             </>
           ) : null}
@@ -192,7 +195,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: StatusBar.currentHeight,
-    backgroundColor: 'white',
+    backgroundColor: Colors['light'].background,
     paddingHorizontal: 25,
   },
   text: {
@@ -214,10 +217,10 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
-    borderWidth: 3,
+    borderWidth: 2,
     borderColor: '#ABB7C2',
-    borderRadius: 8,
-    paddingLeft: 10,
+    borderRadius: 12,
+    paddingLeft: 10
   },
   searchButton: {
     width: 45,
@@ -225,4 +228,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#6C8F9D',
     justifyContent: 'center',
   },
+  lastCardPending: {
+    marginBottom: 20
+  },
+  lastCardApproved: {
+    marginBottom: 60
+  }
 });
