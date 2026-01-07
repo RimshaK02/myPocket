@@ -2,14 +2,15 @@ name: Notify team when PR is ready
 
 on:
   pull_request:
-    types: [ready_for_review]
+    types: [opened, ready_for_review]
 
 permissions:
   pull-requests: write
   issues: write
-  
+
 jobs:
   notify_team:
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     steps:
       - name: Comment and tag team
