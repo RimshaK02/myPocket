@@ -5,141 +5,141 @@
 const MilkshakeClient = require('./src/milkshake_api/client');
 
 async function testFullAPI() {
-  console.log('=== Milkshake API 전체 테스트 ===\n');
+  console.log('=== Milkshake API Full Test ===\n');
 
   const client = new MilkshakeClient();
 
-  // 1. 인증
-  console.log('1. 인증 테스트');
+  // 1. Authentication
+  console.log('1. Authentication test');
   const authResult = await client.authenticate('yoonj13@mcmaster.ca', 'tjf01800?A');
 
   if (!authResult.success) {
-    console.log('❌ 인증 실패:', authResult.error);
+    console.log('❌ Authentication failed:', authResult.error);
     process.exit(1);
   }
 
-  console.log('✅ 인증 성공');
+  console.log('✅ Authentication successful');
   console.log(`   User: ${authResult.data.firstName} ${authResult.data.lastName}`);
   console.log(`   Email: ${authResult.data.email}`);
   console.log(`   Site ID: ${authResult.data.siteId}`);
 
-  // 2. 세션 확인
-  console.log('\n2. 세션 확인');
+  // 2. Session verification
+  console.log('\n2. Session verification');
   const session = await client.getSession();
-  console.log(session.success ? '✅ 세션 활성화됨' : '❌ 세션 없음');
+  console.log(session.success ? '✅ Session active' : '❌ No session');
 
-  // 3. Tasks 조회
-  console.log('\n3. Tasks 조회');
+  // 3. Get tasks
+  console.log('\n3. Get tasks');
   const tasks = await client.getTasks();
   if (tasks.success) {
-    console.log(`✅ Tasks 조회 성공: ${tasks.data.length}개`);
+    console.log(`✅ Tasks retrieved: ${tasks.data.length} tasks`);
     if (tasks.data.length > 0) {
       const task = tasks.data[0];
-      console.log(`   첫 번째 Task: "${task.description}"`);
-      console.log(`   상태: ${task.status}, 우선순위: ${task.priority}`);
+      console.log(`   First task: "${task.description}"`);
+      console.log(`   Status: ${task.status}, Priority: ${task.priority}`);
     }
   } else {
-    console.log('❌ Tasks 조회 실패:', tasks.error);
+    console.log('❌ Failed to get tasks:', tasks.error);
   }
 
-  // 4. Task 생성 테스트
-  console.log('\n4. Task 생성 테스트');
+  // 4. Create task test
+  console.log('\n4. Create task test');
   const newTask = await client.createTask({
-    description: 'PocketAI 테스트 Task',
+    description: 'PocketAI Test Task',
     status: 'pending',
     priority: 'high',
-    notes: 'Milkshake API 연동 테스트용 Task입니다.',
+    notes: 'Test task for Milkshake API integration.',
     siteId: authResult.data.siteId
   });
 
   if (newTask.success) {
-    console.log('✅ Task 생성 성공');
+    console.log('✅ Task created successfully');
     console.log(`   Task ID: ${newTask.data.id}`);
-    console.log(`   설명: ${newTask.data.description}`);
+    console.log(`   Description: ${newTask.data.description}`);
 
-    // 5. Task 조회
-    console.log('\n5. 생성된 Task 조회');
+    // 5. Get task
+    console.log('\n5. Get created task');
     const getTask = await client.getTask(newTask.data.id);
     if (getTask.success) {
-      console.log('✅ Task 조회 성공');
-      console.log(`   설명: ${getTask.data.description}`);
+      console.log('✅ Task retrieved successfully');
+      console.log(`   Description: ${getTask.data.description}`);
       console.log(`   Notes: ${getTask.data.notes}`);
     }
 
-    // 6. Task 업데이트
-    console.log('\n6. Task 업데이트 테스트');
+    // 6. Update task
+    console.log('\n6. Update task test');
     const updateTask = await client.updateTask(newTask.data.id, {
       status: 'in-progress',
-      notes: '업데이트된 메모입니다.'
+      notes: 'Updated notes.'
     });
 
     if (updateTask.success) {
-      console.log('✅ Task 업데이트 성공');
-      console.log(`   새로운 상태: ${updateTask.data.status}`);
+      console.log('✅ Task updated successfully');
+      console.log(`   New status: ${updateTask.data.status}`);
     }
 
-    // 7. Note 추가
-    console.log('\n7. Task에 Note 추가');
+    // 7. Add note
+    console.log('\n7. Add note to task');
     const note = await client.createNote({
       taskId: newTask.data.id,
-      note: 'PocketAI에서 추가한 노트입니다!'
+      note: 'Note added from PocketAI!'
     });
 
     if (note.success) {
-      console.log('✅ Note 추가 성공');
+      console.log('✅ Note added successfully');
       console.log(`   Note ID: ${note.data.id}`);
     }
 
-    // 8. Task 삭제
-    console.log('\n8. Task 삭제 테스트');
+    // 8. Delete task
+    console.log('\n8. Delete task test');
     const deleteTask = await client.deleteTask(newTask.data.id);
     if (deleteTask.success) {
-      console.log('✅ Task 삭제 성공');
+      console.log('✅ Task deleted successfully');
     }
   } else {
-    console.log('❌ Task 생성 실패:', newTask.error);
+    console.log('❌ Failed to create task:', newTask.error);
   }
 
-  // 9. Animals 조회
-  console.log('\n9. Animals 조회');
+  // 9. Get animals
+  console.log('\n9. Get animals');
   const animals = await client.getAnimals();
   if (animals.success) {
-    console.log(`✅ Animals 조회 성공: ${animals.data.length}개`);
+    console.log(`✅ Animals retrieved: ${animals.data.length} animals`);
     if (animals.data.length > 0) {
       const animal = animals.data[0];
-      console.log(`   첫 번째 동물: ${animal.name || 'No name'}`);
+      console.log(`   First animal: ${animal.name || 'No name'}`);
       console.log(`   Tag: ${animal.tag || 'No tag'}`);
     }
   } else {
-    console.log('❌ Animals 조회 실패:', animals.error);
+    console.log('❌ Failed to get animals:', animals.error);
   }
 
-  // 10. Users 조회
-  console.log('\n10. Users 조회');
+  // 10. Get users
+  console.log('\n10. Get users');
   const users = await client.getUsers();
   if (users.success) {
-    console.log(`✅ Users 조회 성공: ${users.data.length}명`);
+    console.log(`✅ Users retrieved: ${users.data.length} users`);
     const currentUser = users.data.find(u => u.id === authResult.data.userId);
     if (currentUser) {
-      console.log(`   현재 사용자: ${currentUser.firstName} ${currentUser.lastName}`);
+      console.log(`   Current user: ${currentUser.firstName} ${currentUser.lastName}`);
       console.log(`   Role: ${currentUser.employees[0]?.role || 'N/A'}`);
     }
   } else {
-    console.log('❌ Users 조회 실패:', users.error);
+    console.log('❌ Failed to get users:', users.error);
   }
 
-  console.log('\n=== 테스트 완료! ===');
-  console.log('\n✅ 모든 Milkshake API 기능이 정상 작동합니다!');
-  console.log('\n사용 가능한 API:');
-  console.log('  - Tasks (할 일 관리)');
-  console.log('  - Animals (동물 관리)');
-  console.log('  - Animal Events (동물 이벤트)');
-  console.log('  - Notes (메모)');
-  console.log('  - Users (사용자)');
+  console.log('\n=== Test Complete! ===');
+  console.log('\n✅ All Milkshake API features working properly!');
+  console.log('\nAvailable APIs:');
+  console.log('  - Tasks (Task management)');
+  console.log('  - Animals (Animal management)');
+  console.log('  - Animal Events (Animal events)');
+  console.log('  - Notes (Notes)');
+  console.log('  - Users (Users)');
 }
 
 testFullAPI().catch(error => {
-  console.error('\n❌ 예상치 못한 에러:', error.message);
+  console.error('\n❌ Unexpected error:', error.message);
   console.error(error.stack);
   process.exit(1);
 });
