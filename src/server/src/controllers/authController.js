@@ -72,14 +72,6 @@ const login = async (req, res) => {
       });
     }
 
-    // Check if Google login user
-    if (user.googleId && !user.password) {
-      return res.status(400).json({
-        success: false,
-        message: 'Please login with Google'
-      });
-    }
-
     // Verify password
     const isPasswordValid = await user.comparePassword(password);
 
@@ -178,36 +170,10 @@ const logout = async (req, res) => {
   });
 };
 
-/**
- * Google OAuth Callback
- * GET /api/auth/google/callback
- */
-const googleCallback = async (req, res) => {
-  try {
-    // User authenticated by Passport
-    const user = req.user;
-
-    // Generate JWT token
-    const token = generateToken({
-      oid: user._id.toString(),
-      email: user.email
-    });
-
-    // Redirect to frontend (pass token)
-    // For mobile apps, use custom URL scheme
-    const redirectUrl = `${process.env.FRONTEND_URL}/auth/callback?token=${token}`;
-    res.redirect(redirectUrl);
-  } catch (error) {
-    console.error('Google callback error:', error);
-    res.redirect(`${process.env.FRONTEND_URL}/auth/error`);
-  }
-};
-
 module.exports = {
   register,
   login,
   verifyTokenEndpoint,
   getCurrentUser,
-  logout,
-  googleCallback
+  logout
 };
