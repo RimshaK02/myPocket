@@ -10,20 +10,20 @@ process.env.JWT_SECRET = 'test-secret';
 // Test 1: Check if all modules can be required
 console.log('=== Test 1: Module Loading ===');
 try {
-  const Log = require('./src/models/Log');
+  const Log = require('../../src/models/Log');
   console.log('✓ Log model loaded');
 
-  const User = require('./src/models/User');
+  const User = require('../../src/models/User');
   console.log('✓ User model loaded');
 
-  const MilkshakeClient = require('./src/milkshake_api/client');
+  const MilkshakeClient = require('../../src/milkshake_api/client');
   console.log('✓ MilkshakeClient loaded');
 
-  const logController = require('./src/controllers/logController');
+  const logController = require('../../src/controllers/logController');
   console.log('✓ logController loaded');
   console.log('  Controller methods:', Object.keys(logController).join(', '));
 
-  const logRoutes = require('./src/routes/logRoutes');
+  const logRoutes = require('../../src/routes/logRoutes');
   console.log('✓ logRoutes loaded');
 
   console.log('\n✅ All modules loaded successfully!\n');
@@ -36,7 +36,7 @@ try {
 // Test 2: Check MilkshakeClient API methods
 console.log('=== Test 2: MilkshakeClient API Methods ===');
 try {
-  const MilkshakeClient = require('./src/milkshake_api/client');
+  const MilkshakeClient = require('../../src/milkshake_api/client');
   const client = new MilkshakeClient();
 
   const methods = [
@@ -79,7 +79,7 @@ try {
 console.log('=== Test 3: Log Model Schema ===');
 try {
   const mongoose = require('mongoose');
-  const Log = require('./src/models/Log');
+  const Log = require('../../src/models/Log');
 
   const schema = Log.schema;
   const paths = Object.keys(schema.paths);
@@ -120,7 +120,7 @@ try {
 // Test 4: Check User Model Updates
 console.log('=== Test 4: User Model Schema ===');
 try {
-  const User = require('./src/models/User');
+  const User = require('../../src/models/User');
   const schema = User.schema;
 
   if (schema.paths.settings && schema.paths['settings.autoApprove']) {

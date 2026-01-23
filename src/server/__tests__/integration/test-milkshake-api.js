@@ -3,7 +3,7 @@
  * Tests all major API endpoints with proper authentication
  */
 
-const MilkshakeClient = require('./src/milkshake_api/client');
+const MilkshakeClient = require('../../src/milkshake_api/client');
 
 async function testMilkshakeAPI() {
   console.log('=== Milkshake Capstone API Full Test ===\n');

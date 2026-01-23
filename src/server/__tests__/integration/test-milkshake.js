@@ -2,7 +2,7 @@
  * Test Milkshake API directly
  */
 
-const MilkshakeClient = require('./src/milkshake_api/client');
+const MilkshakeClient = require('../../src/milkshake_api/client');
 
 async function testMilkshakeAPI() {
   console.log('=== Testing Milkshake API ===\n');
