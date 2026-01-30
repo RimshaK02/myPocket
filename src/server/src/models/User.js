@@ -13,16 +13,11 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: function() {
-      // Google and Milkshake login users don't need password
-      return !this.googleId && !this.milkshakeUserId;
+      // Milkshake login users don't need password
+      return !this.milkshakeUserId;
     },
     minlength: [10, 'Password must be at least 10 characters long'],
     select: false // Don't include password in query results by default
-  },
-  googleId: {
-    type: String,
-    sparse: true, // Only Google login users have this value
-    unique: true
   },
   milkshakeUserId: {
     type: Number,
@@ -43,6 +38,13 @@ const userSchema = new mongoose.Schema({
   },
   lastLogin: {
     type: Date
+  },
+  // User settings
+  settings: {
+    autoApprove: {
+      type: Boolean,
+      default: false  // Default: manual approval, true for auto approval
+    }
   }
 }, {
   timestamps: true,
@@ -53,11 +55,6 @@ const userSchema = new mongoose.Schema({
 userSchema.pre('save', async function(next) {
   // Skip if password not modified
   if (!this.isModified('password')) {
-    return next();
-  }
-
-  // Skip hashing for Google login users
-  if (this.googleId && !this.password) {
     return next();
   }
 

@@ -48,15 +48,27 @@ const milkshakeLogin = async (req, res) => {
     let user = await User.findOne({ milkshakeUserId });
 
     if (!user) {
-      // Create new user with Milkshake data
-      console.log(`[Milkshake Auth] Creating new user for Milkshake ID: ${milkshakeUserId}`);
-      user = await User.create({
-        email: milkshakeUser.email,
-        milkshakeUserId: milkshakeUserId,
-        milkshakeEmail: milkshakeUser.email,
-        // No password needed for Milkshake users
-        lastLogin: new Date()
-      });
+      // Try to find by email (in case user was created via regular registration)
+      user = await User.findOne({ email: milkshakeUser.email });
+
+      if (user) {
+        // Update existing user with Milkshake ID
+        console.log(`[Milkshake Auth] Linking existing user ${user._id} to Milkshake ID: ${milkshakeUserId}`);
+        user.milkshakeUserId = milkshakeUserId;
+        user.milkshakeEmail = milkshakeUser.email;
+        user.lastLogin = new Date();
+        await user.save();
+      } else {
+        // Create new user with Milkshake data
+        console.log(`[Milkshake Auth] Creating new user for Milkshake ID: ${milkshakeUserId}`);
+        user = await User.create({
+          email: milkshakeUser.email,
+          milkshakeUserId: milkshakeUserId,
+          milkshakeEmail: milkshakeUser.email,
+          // No password needed for Milkshake users
+          lastLogin: new Date()
+        });
+      }
     } else {
       // Update existing user
       console.log(`[Milkshake Auth] Found existing user: ${user._id}`);

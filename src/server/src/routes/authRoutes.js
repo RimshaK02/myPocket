@@ -1,13 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const passport = require('../config/passport');
 const {
   register,
   login,
   verifyTokenEndpoint,
   getCurrentUser,
-  logout,
-  googleCallback
+  logout
 } = require('../controllers/authController');
 const {
   milkshakeLogin,
@@ -27,23 +25,6 @@ router.post('/login', loginValidation, validate, login);
 // Milkshake authentication routes
 router.post('/milkshake/login', milkshakeLogin);
 router.post('/refresh', refreshAccessToken);
-
-// Google OAuth routes
-router.get(
-  '/google',
-  passport.authenticate('google', {
-    scope: ['profile', 'email']
-  })
-);
-
-router.get(
-  '/google/callback',
-  passport.authenticate('google', {
-    session: false,
-    failureRedirect: '/auth/error'
-  }),
-  googleCallback
-);
 
 // Protected routes (authentication required)
 router.get('/verify', authenticate, verifyTokenEndpoint);
