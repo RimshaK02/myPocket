@@ -2,7 +2,7 @@ import NestedNavCard from './ui/cards/NestedNavCard';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { View, StyleProp, ViewStyle } from 'react-native';
 
-export type LogType = 'task' | 'notes' | 'animalEvent' | 'animal';
+export type LogType = 'task' | 'note' | 'animalEvent' | 'animal';
 export type LogStatus = 'approved' | 'pending' | 'error';
 
 type LogConfig = {
@@ -17,10 +17,10 @@ export const LOG_CONFIG: Record<LogType, LogConfig> = {
     color: '#5C7680',
     text: 'Task',
   },
-  notes: {
+  note: {
     iconName: 'note-edit-outline',
     color: '#7A866D',
-    text: 'Notes',
+    text: 'Note',
   },
   animalEvent: {
     iconName: 'paw',

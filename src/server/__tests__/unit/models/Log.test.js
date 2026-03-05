@@ -338,7 +338,7 @@ describe('Log Model Unit Tests', () => {
         animalIds: [100, 101, 102],
         animalEventTypeId: 3,
         eventDateTime: new Date(),
-        notes: 'Vaccination completed'
+        note: 'Vaccination completed'
       };
 
       const log = await Log.create({
@@ -349,7 +349,7 @@ describe('Log Model Unit Tests', () => {
 
       expect(log.data.animalIds).toEqual([100, 101, 102]);
       expect(log.data.animalEventTypeId).toBe(3);
-      expect(log.data.notes).toBe('Vaccination completed');
+      expect(log.data.note).toBe('Vaccination completed');
     });
   });
 

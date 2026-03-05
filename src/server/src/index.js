@@ -4,6 +4,7 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const logRoutes = require('./routes/logRoutes');
+const { importCommandLogsOnce } = require('./jobs/importCommandLogsJob');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -56,4 +57,27 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV}`);
+
+  // Periodic import of Trigger-word command_logs into MongoDB
+  if (process.env.NODE_ENV !== 'test') {
+    const defaultIntervalMs = 300000; // 5 minutes
+    const intervalMs = parseInt(process.env.COMMAND_LOG_IMPORT_INTERVAL_MS || `${defaultIntervalMs}`, 10);
+
+    const runImportJob = async () => {
+      try {
+        await importCommandLogsOnce();
+      } catch (err) {
+        console.error('Error running Trigger-word import job:', err.message || err);
+      }
+    };
+
+    // Run once on startup
+    runImportJob();
+
+    // Then schedule periodically
+    if (intervalMs > 0) {
+      setInterval(runImportJob, intervalMs);
+      console.log(`Trigger-word import job scheduled every ${intervalMs} ms.`);
+    }
+  }
 });
