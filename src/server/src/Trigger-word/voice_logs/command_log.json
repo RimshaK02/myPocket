@@ -1,0 +1,73 @@
+[
+  {
+    "timestamp": "2025-11-19T18:26:24.184629",
+    "audio_file": "voice_logs\\command_20251119_398920.wav",
+    "transcription": "Cow 60 needs checking by 2 pm",
+    "action": "animal event",
+    "parameters": {
+      "cow_id": 60,
+      "action": "checking",
+      "issue": null,
+      "time": "14:00",
+      "assigned_to": null
+    },
+    "response": ""
+  },
+    {
+    "timestamp": "2025-11-19T19:04:17.196100",
+    "audio_file": "voice_logs\\command_20251119_371929.wav",
+    "transcription": "Make a task to clean pen 4 before 5 pm and assign it to David.",
+    "action": "task",
+    "parameters": {
+      "cow_id": null,
+      "action": "clean pen 4",
+      "issue": null,
+      "time": "17:00",
+      "assigned_to": "David"
+    },
+    "response": ""
+  },
+    {
+    "timestamp": "2025-11-19T19:25:05.739294",
+    "audio_file": "voice_logs\\command_20251119_118294.wav",
+    "transcription": "Cow 212 sleeping",
+    "action": "animal",
+    "parameters": {
+      "cow_id": 212,
+      "action": null,
+      "issue": null,
+      "time": null,
+      "assigned_to": null
+    },
+    "response": ""
+  },
+    {
+    "timestamp": "2025-11-19T21:34:23.829462",
+    "audio_file": "voice_logs\\command_20251119_190417.wav",
+    "transcription": "Make a note that cow 345 is limping",
+    "action": "note",
+    "parameters": {
+      "cow_id": 345,
+      "action": null,
+      "issue": "limping",
+      "time": null,
+      "assigned_to": null
+    },
+    "response": ""
+  },
+  {
+    "timestamp": "2025-11-19T23:54:10.795228",
+    "audio_file": "voice_logs\\command_20251119_283094.wav",
+    "transcription": "Cow 812 looks injured, check in 30 minutes.",
+    "action": "animal event",
+    "parameters": {
+      "cow_id": 812,
+      "action": "check in 30 minutes",
+      "issue": "injured",
+      "time": "06:48",
+      "assigned_to": null
+    },
+    "response": ""
+  }
+
+]
